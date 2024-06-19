@@ -16,8 +16,8 @@ Soverant application
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/yourproject.git
-cd yourproject
+git clone https://github.com/git@github.com:soverant/confidant.git
+cd confidant
 ```
 
 ### Set Up Python Environment
@@ -41,7 +41,7 @@ cd yourproject
 You can install all dependencies for both the back-end and front-end using the `main.py` script.
 
 ```bash
-python min.py development --install
+python main.py development --install
 ```
 
 Alternatively, you can install dependencies manually:
