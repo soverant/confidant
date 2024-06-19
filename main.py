@@ -3,23 +3,28 @@ import os
 import logging
 from threading import Thread
 import argparse
+import signal
+import sys
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(message)s')
+
+# Create separate loggers for backend and frontend
+backend_logger = logging.getLogger("backend")
+frontend_logger = logging.getLogger("frontend")
 
 def install_dependencies():
-    logger.info("Installing dependencies for FastAPI back-end")
+    backend_logger.info("Installing dependencies for FastAPI back-end")
     subprocess.check_call(["pip", "install", "-r", "backend/requirements.txt"])
-    logger.info("Dependencies installed for FastAPI back-end")
+    backend_logger.info("Dependencies installed for FastAPI back-end")
 
-    logger.info("Installing dependencies for Next.js front-end")
+    frontend_logger.info("Installing dependencies for Next.js front-end")
     subprocess.check_call(["npm", "install"], cwd="frontend")
-    logger.info("Dependencies installed for Next.js front-end")
+    frontend_logger.info("Dependencies installed for Next.js front-end")
 
-def stream_logs(pipe, log_function):
+def stream_logs(pipe, logger, ):
     for line in iter(pipe.readline, b''):
-        log_function(line.decode().strip())
+        logger.info(f"{line.decode().strip()}")
     pipe.close()
 
 def start_servers(env):
@@ -33,19 +38,32 @@ def start_servers(env):
     frontend_command = f"npm run dev" if env == "development" else f"npm run build && npm run start"
 
     # Log the commands being run
-    logger.info("Starting FastAPI server with command: %s", backend_command)
-    logger.info("Starting Next.js server with command: %s", frontend_command)
+    backend_logger.info("Starting FastAPI server with command: %s", backend_command)
+    frontend_logger.info("Starting Next.js server with command: %s", frontend_command)
 
     # Run both commands
     backend_process = subprocess.Popen(backend_command, cwd=backend_dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     frontend_process = subprocess.Popen(frontend_command, cwd=frontend_dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    
+    def shutdown(signum, frame):
+        backend_logger.info("Shutting down servers...")
+        frontend_logger.info("Shutting down servers...")
+        backend_process.terminate()
+        frontend_process.terminate()
+        backend_logger.info("Servers shut down gracefully")
+        frontend_logger.info("Servers shut down gracefully")
+        sys.exit(0)
+
+    # Register the signal handler for graceful shutdown
+    signal.signal(signal.SIGINT, shutdown)
+    signal.signal(signal.SIGTERM, shutdown)
 
     # Stream logs for backend
-    Thread(target=stream_logs, args=(backend_process.stdout, logger.info)).start()
-    Thread(target=stream_logs, args=(backend_process.stderr, logger.error)).start()
+    Thread(target=stream_logs, args=(backend_process.stdout, backend_logger)).start()
+    Thread(target=stream_logs, args=(backend_process.stderr, backend_logger)).start()
     # Stream logs for frontend
-    Thread(target=stream_logs, args=(frontend_process.stdout, logger.info)).start()
-    Thread(target=stream_logs, args=(frontend_process.stderr, logger.error)).start()
+    Thread(target=stream_logs, args=(frontend_process.stdout, frontend_logger)).start()
+    Thread(target=stream_logs, args=(frontend_process.stderr, frontend_logger)).start()
 
     # Wait for both processes to complete
     backend_process.wait()
@@ -60,6 +78,8 @@ if __name__ == "__main__":
     if args.install:
         install_dependencies()
 
-    logger.info("Starting both FastAPI and Next.js servers in %s mode", args.mode)
+    backend_logger.info("Starting both FastAPI and Next.js servers in %s mode", args.mode)
+    frontend_logger.info("Starting both FastAPI and Next.js servers in %s mode", args.mode)
     start_servers(args.mode)
-    logger.info("Both servers have been started in %s mode", args.mode)
+    backend_logger.info("Both servers have been started in %s mode", args.mode)
+    frontend_logger.info("Both servers have been started in %s mode", args.mode)
