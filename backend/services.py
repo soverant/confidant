@@ -1,5 +1,5 @@
 from uuid import uuid4
-from models import Chat, Message, SenderTypeEnum
+from models.chat import Chat, Message, SenderTypeEnum
 
 
 class ConfidantsService:
@@ -31,4 +31,5 @@ class ChatService:
         response.set_cookie(key=CHAT_COOKIE_KEY, value=str(chat_id))
         data = await Chat.from_queryset_single(Chats.get(id=chat_id))
         return chat
+
 
