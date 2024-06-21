@@ -23,7 +23,7 @@ class NarratorConfidant:
 
 
 class ChatService:
-    def create_chat(self, confidant: NarratorConfidant)->Chat:
+    async def create_chat(self, confidant: NarratorConfidant)->Chat:
         chat_id = uuid.uuid4()
         chat_obj = await Chats.create(id=chat_id)
         rep_msg = confidant.chat(chat_obj)
