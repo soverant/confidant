@@ -10,7 +10,7 @@ from tortoise.contrib.fastapi import RegisterTortoise
 from contextlib import asynccontextmanager
 from models import *
 from config import get_config
-from services import ConfidantsService,ChatService
+from services import ConfidantsService #,ChatService
 
 CHAT_COOKIE_KEY = "chat_id"
 
@@ -39,7 +39,7 @@ try:
     conf = get_config()
     log = logging.getLogger(__name__)
     confidants_service = ConfidantsService()
-    chat_service = ChatService()
+    # chat_service = ChatService()
     app = FastAPI(title="Soverant POC API", lifespan=lifespan)
 
 except Exception as e:
@@ -121,3 +121,20 @@ async def send(req: MessageIn, chat_id: Annotated[Union[str, None], Cookie()] = 
             status_code=500,
             detail=err
         )
+
+
+@app.get("/poset/{node_id}")
+async def get_node(node_id: str) -> Node:
+    node = await Node.from_queryset_single(NodeModel.get(id=node_id))
+    return node
+
+
+@app.post("/poset")
+async def add_node(node: NodeIn, parent_id: Optional[str] = None):
+    node_obj = await NodeModel.create(**node.model_dump(exclude_unset=True))
+    if parent_id:
+        parent = await NodeModel.get(id=parent_id)
+        await EdgeModel.create(head=parent, tail=node_obj)
+    new_node = await Node.from_queryset_single(NodeModel.get(id=node_obj.id))
+    return new_node
+
