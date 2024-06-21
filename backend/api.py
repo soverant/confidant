@@ -10,7 +10,7 @@ from tortoise.contrib.fastapi import RegisterTortoise
 from contextlib import asynccontextmanager
 from models import *
 from config import get_config
-from services import ConfidantsService
+from services import ConfidantsService,ChatService
 
 CHAT_COOKIE_KEY = "chat_id"
 
@@ -39,6 +39,7 @@ try:
     conf = get_config()
     log = logging.getLogger(__name__)
     confidants_service = ConfidantsService()
+    chat_service = ChatService()
     app = FastAPI(title="Soverant POC API", lifespan=lifespan)
 
 except Exception as e:
@@ -60,7 +61,31 @@ async def create_chat(response: Response, confidant_id: str) -> Chat:
         return data
     except ValueError as e:
         err = str(e)
-        log.error("sample post error: %s", err)
+        log.error("confidant not found: %s", err)
+        raise HTTPException(
+            status_code=404,
+            detail=err
+        )
+    except Exception as e:
+        err = str(e)
+        log.error("create chat failed with error: %s", err)
+        raise HTTPException(
+            status_code=500,
+            detail=err
+        )
+
+
+@app.get("/chats")
+async def get_chat(chat_id: Annotated[Union[str, None], Cookie()] = None) -> Chat:
+    try:
+        log.debug("request chats with confidant: %s  chat_id: %s")
+        if chat_id == None:
+            raise ValueError("chat id not found")    
+        chat = await Chat.from_queryset_single(Chats.get(id=chat_id))
+        return chat 
+    except ValueError as e:
+        err = str(e)
+        log.error("inputs are not valid: %s", err)
         raise HTTPException(
             status_code=404,
             detail=err
@@ -74,12 +99,21 @@ async def create_chat(response: Response, confidant_id: str) -> Chat:
         )
 
 
-@app.get("/chats")
-async def get_chats(chat_id_params: Optional[str], chat_id: Annotated[Union[str, None], Cookie()] = None) -> SuccessDTO:
+@app.post("/chats")
+async def send(req: MessageIn, chat_id: Annotated[Union[str, None], Cookie()] = None) -> Chat:
     try:
-        log.debug("create chat called")
-        return {"msg": "chat has id: " + chat_id}
-
+        log.debug("request chats with confidant: %s  chat_id: %s")
+        if chat_id == None:
+            raise ValueError("chat not found")    
+        chat = await Chat.from_queryset_single(Chats.get(id=chat_id))
+        return chat 
+    except ValueError as e:
+        err = str(e)
+        log.error("inputs are not valid: %s", err)
+        raise HTTPException(
+            status_code=404,
+            detail=err
+        )
     except Exception as e:
         err = str(e)
         log.error("sample post error: %s", err)
@@ -87,8 +121,3 @@ async def get_chats(chat_id_params: Optional[str], chat_id: Annotated[Union[str,
             status_code=500,
             detail=err
         )
-
-
-@app.post("/chats")
-async def send_message():
-    pass

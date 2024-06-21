@@ -44,3 +44,4 @@ class SuccessDTO(PydanticBaseModel):
 Tortoise.init_models(["models"], "models")
 Chat = pydantic_model_creator(Chats, name="Chat")
 Message = pydantic_model_creator(Messages, name="Message")
+MessageIn = pydantic_model_creator(Messages, name="Message", exclude=["chat"])
