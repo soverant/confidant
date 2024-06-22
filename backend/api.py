@@ -5,13 +5,14 @@ from typing import Union, AsyncGenerator
 from typing_extensions import Annotated
 from fastapi import FastAPI, HTTPException, Cookie, Response
 from fastapi.responses import JSONResponse
+from starlette.routing import Mount
 from tortoise import Tortoise
 from tortoise.contrib.fastapi import RegisterTortoise
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, AsyncExitStack
 from models.chat import *
 from config import get_config
 from services import ConfidantsService #,ChatService
-from poset import poset
+from poset import poset, repository
 from chat import chat
 
 CHAT_COOKIE_KEY = "chat_id"
@@ -19,7 +20,6 @@ CHAT_COOKIE_KEY = "chat_id"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-
     # app startup
     async with RegisterTortoise(
             app,
@@ -29,10 +29,13 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             add_exception_handlers=True,
     ):
         # db connected
-        print("db connected")
+        print("root db connected")
+        await repository.connect_to_database()
+        await repository.create_tables()
         yield
         # app teardown
-        print("db disconnected")
+        repository.disconnect_from_database()
+        print("root db disconnected")
     # db connections closed
 
 
