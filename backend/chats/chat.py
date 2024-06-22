@@ -1,14 +1,21 @@
+
+import logging
+import uuid
 from fastapi import APIRouter, Depends, HTTPException, Response, Cookie
 from typing import Union, AsyncGenerator
 from typing_extensions import Annotated
-from models.chat import *
+from .models import *
+from .services import ConfidantsService
 
+log = logging.getLogger(__name__)
 
+CHAT_COOKIE_KEY = "chat_id"
 router = APIRouter(
     prefix="/chat",
     tags=["chat"],
 )
 
+confidants_service = ConfidantsService()
 
 @router.post("/{confidant_id}/create")
 async def create_chat(response: Response, confidant_id: str) -> Chat:

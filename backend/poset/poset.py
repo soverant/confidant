@@ -2,7 +2,6 @@ import logging
 from typing import AsyncGenerator, Optional
 from contextlib import asynccontextmanager
 from fastapi import APIRouter, Depends, HTTPException
-from databases import Database
 from .repository import NodeModel, EdgeModel, connect_to_database, disconnect_from_database, create_tables
 from .models import *
 
