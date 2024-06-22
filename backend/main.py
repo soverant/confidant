@@ -35,6 +35,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 try:
 
     conf = get_config()
+    setup_logger()
     log = logging.getLogger(__name__)
     app = FastAPI(title="Soverant POC API", lifespan=lifespan)
     app.include_router(poset.router)
