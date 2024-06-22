@@ -1,5 +1,5 @@
 from uuid import uuid4
-from models.chat import Chat, Message, SenderTypeEnum
+from chats.models import Chat, Message, SenderTypeEnum
 
 
 class ConfidantsService:
@@ -16,14 +16,14 @@ class ConfidantsService:
 
 
 class NarratorConfidant:
-    def chat(self, chat: Chat) -> Message:
+    def chat(self, chat: 'Chat') -> 'Message':
         print(chat)
         return Message(id=uuid4(),chat=chat, sender_type=SenderTypeEnum.CONFIDANT, sender="fixed",
                        content="Hello world!")
 
 
 class ChatService:
-    async def create_chat(self, confidant: NarratorConfidant)->Chat:
+    async def create_chat(self, confidant: NarratorConfidant)->'Chat':
         chat_id = uuid.uuid4()
         chat_obj = await Chats.create(id=chat_id)
         rep_msg = confidant.chat(chat_obj)
