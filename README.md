@@ -112,7 +112,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [Next.js](https://nextjs.org/)
-
----
-
-Feel free to customize the README further based on your specific needs and project details.
