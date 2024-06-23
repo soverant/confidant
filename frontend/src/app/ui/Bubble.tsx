@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useTheme } from '@mui/material/styles';
 import { FC, useMemo } from "react";
 
-interface BubbleProps {
+export interface BubbleProps {
   content?: string;
   type: "sent" | "received" | "system";
   avatar?: typeof Avatar;
