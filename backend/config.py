@@ -1,23 +1,22 @@
 import logging
-import os
-from dotenv import load_dotenv
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Config:
-    _instance = None
+class Configs(BaseSettings):
+    log_level: str = Field("DEBUG")
+    host: str = Field("0.0.0.0")
+    port: int = Field(8000)
+    environment: str = Field("development")
+    orm_db_url: str = Field("sqlite://test.db")
+    unmanaged_db_url: str = Field("sqlite:///um_database.db")
 
-    def __new__(cls, telegram_token="", gemini_token="", log_level=logging.DEBUG):
-        if not cls._instance:
-            cls._instance = super(Config, cls).__new__(cls)
-        return cls._instance
+    def get_log_level(self):
+        return getattr(logging, self.log_level, logging.INFO)
 
-    def __init__(self, host="0.0.0.0", port=8000, env="", log_level=logging.DEBUG):
-        load_dotenv()
-        self.LOG_LEVEL = getattr(logging, os.environ.get("LOG_LEVEL", "").upper(), log_level)
-        self.HOST = os.environ.get("HOST", host)
-        self.PORT = os.environ.get("PORT", port)
-        self.RELOAD = False if os.environ.get("env", env) == "prod" else True
+
+conf = Configs()
 
 
 def get_config():
-    return Config()
+    return conf

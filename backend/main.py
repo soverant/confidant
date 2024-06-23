@@ -1,5 +1,4 @@
 import logging
-
 import sys
 from typing import AsyncGenerator
 from fastapi import FastAPI
@@ -7,35 +6,36 @@ from tortoise.contrib.fastapi import RegisterTortoise
 from contextlib import asynccontextmanager
 from logger import setup_logger
 from config import get_config
-from poset import poset, repository
+from poset import poset
+from poset.repository import get_database
 from chats import chat
 
-
+conf = get_config()
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # app startup
     async with RegisterTortoise(
             app,
-            db_url="sqlite://:memory:",
+            db_url=conf.orm_db_url,
             modules={"models": ["chats.models"]},
             generate_schemas=True,
             add_exception_handlers=True,
     ):
         # db connected
         print("root db connected")
-        await repository.connect_to_database()
-        await repository.create_tables()
+        umdatabase = get_database()
+        umdatabase.init_db(conf.unmanaged_db_url)
+        await umdatabase.connect_to_database()
+        await umdatabase.create_tables()
         yield
         # app teardown
-        await repository.disconnect_from_database()
+        await umdatabase.disconnect_from_database()
         print("root db disconnected")
     # db connections closed
 
 
 try:
-
-    conf = get_config()
-    setup_logger()
+    setup_logger(conf.get_log_level())
     log = logging.getLogger(__name__)
     app = FastAPI(title="Soverant POC API", lifespan=lifespan)
     app.include_router(poset.router)
