@@ -25,6 +25,7 @@ class TortoiseAbstractBaseModel(models.Model):
 
 
 class Chats(TortoiseAbstractBaseModel, TimestampMixin):
+    confidant_id = fields.data.BigIntField()
     messages = fields.ReverseRelation["Messages"]
 
 
@@ -44,5 +45,5 @@ class SuccessDTO(PydanticBaseModel):
 Tortoise.init_models(["chats.models"], "models")
 Chat = pydantic_model_creator(Chats, name="Chat")
 Message = pydantic_model_creator(Messages, name="Message")
-MessageIn = pydantic_model_creator(Messages, name="Message", exclude=["chat"])
+MessageIn = pydantic_model_creator(Messages, name="MessageIn", exclude=["chat","chat_id","id"])
 
