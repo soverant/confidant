@@ -1,6 +1,5 @@
 from pydantic import BaseModel as PydanticBaseModel
-from typing import Optional, Literal
-import datetime
+from typing import Optional
 from tortoise import Tortoise
 from enum import Enum
 from tortoise import fields, models

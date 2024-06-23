@@ -1,8 +1,8 @@
 
 import logging
 import uuid
-from fastapi import APIRouter, Depends, HTTPException, Response, Cookie
-from typing import Union, AsyncGenerator
+from fastapi import APIRouter, HTTPException, Response, Cookie
+from typing import Union
 from typing_extensions import Annotated
 from .models import *
 from .services import ConfidantsService

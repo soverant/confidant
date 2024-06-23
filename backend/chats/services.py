@@ -1,5 +1,5 @@
 from uuid import uuid4
-from chats.models import Chat, Message, SenderTypeEnum
+from .models import Chat, Message, SenderTypeEnum
 
 
 class ConfidantsService:

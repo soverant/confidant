@@ -1,33 +1,15 @@
 import logging
 from typing import AsyncGenerator, Optional
 from contextlib import asynccontextmanager
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from .repository import NodeModel, EdgeModel, connect_to_database, disconnect_from_database, create_tables
 from .models import *
 
 log = logging.getLogger(__name__)
-
-@asynccontextmanager
-async def lifespan(router: APIRouter) -> AsyncGenerator[None, None]:
-    # app startup
-    async with connect_to_database():
-        # db connected
-        log.debug("post db connected")
-        await create_tables()
-        yield
-        # app teardown
-        await disconnect_from_database()
-        log.debug("poset db disconnected")
-    # db connections closed
-
-
 router = APIRouter(
     prefix="/poset",
     tags=["poset"],
-    lifespan=lifespan
 )
-
-
 
 # Node CRUD endpoints
 @router.post("/nodes/", response_model=Node)
