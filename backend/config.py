@@ -8,8 +8,8 @@ class Configs(BaseSettings):
     host: str = Field("0.0.0.0")
     port: int = Field(8000)
     environment: str = Field("development")
-    orm_db_url: str = Field("sqlite://test.db")
-    unmanaged_db_url: str = Field("sqlite:///um_database.db")
+    orm_db_url: str = Field("sqlite://./data/orm_database.db")
+    unmanaged_db_url: str = Field("sqlite://./data/um_database.db")
 
     def get_log_level(self):
         return getattr(logging, self.log_level, logging.INFO)
