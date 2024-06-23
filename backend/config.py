@@ -14,6 +14,10 @@ class Configs(BaseSettings):
     def get_log_level(self):
         return getattr(logging, self.log_level, logging.INFO)
 
+    @property
+    def is_dev(self):
+        return self.environment is "development"
+
 
 conf = Configs()
 
