@@ -23,7 +23,7 @@ async def create_chat(response: Response, confidant_id: str) -> Chat:
         confidant = confidants_service.get_confidant(confidant_id=confidant_id)
         chat_id = uuid.uuid4()
         chat_obj = await Chats.create(id=chat_id, confidant_id=confidant_id)
-        rep_msg = confidant.chat(chat_obj)
+        rep_msg = await confidant.chat(chat_obj)
         msg_obj = await Messages.create(**rep_msg.model_dump(exclude_unset=True, exclude="chat"), chat=chat_obj)
         data = await Chat.from_queryset_single(Chats.get(id=chat_id))
         log.debug(data)
@@ -81,7 +81,7 @@ async def send(req: MessageIn) -> Chat:
         )
     log.debug("confidant %d", chat_obj.confidant_id)
     confidant = confidants_service.get_confidant(confidant_id=str(chat_obj.confidant_id))
-    rep_msg = confidant.chat(chat_obj)
+    rep_msg = await confidant.chat(await Chat.from_queryset_single(Chats.get(id=req.chat_id)))
     await Messages.create(**rep_msg.model_dump(exclude_unset=True, exclude=["chat"]), chat=chat_obj)
     data = await Chat.from_queryset_single(Chats.get(id=req.chat_id))
     return data

@@ -1,15 +1,21 @@
 import logging
 import sys
-from typing import AsyncGenerator
-from fastapi import FastAPI
-from tortoise.contrib.fastapi import RegisterTortoise
 from contextlib import asynccontextmanager
+from typing import AsyncGenerator
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from tortoise.contrib.fastapi import RegisterTortoise
+from openai import AsyncAzureOpenAI
+
+from chats.services import NarratorConfidant
+from chats import chat
+from chats.chat import confidants_service
+from config import get_config
 from logger import setup_logger
 from poset import poset
-from config import get_config
 from poset.repository import get_database
-from chats import chat
-from fastapi.middleware.cors import CORSMiddleware
+
 
 conf = get_config()
 
@@ -30,6 +36,14 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         umdatabase.init_db(conf.unmanaged_db_url)
         await umdatabase.connect_to_database()
         await umdatabase.create_tables()
+        client = AsyncAzureOpenAI(
+            # This is the default and can be omitted
+            api_key=conf.openai_token,
+            api_version="2023-07-01-preview",
+            azure_endpoint="https://mlk-openai-farhoud.openai.azure.com/",
+        )
+        confidant = NarratorConfidant(client)
+        confidants_service.set_confidant("0",confidant)
         yield
         # app teardown
         await umdatabase.disconnect_from_database()
