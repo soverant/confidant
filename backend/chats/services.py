@@ -1,35 +1,55 @@
+import logging
 from uuid import uuid4
-from chats.models import Chat, Message, SenderTypeEnum
+import yaml
 
+from pydantic import BaseModel
+
+from .models import Chats, Message, SenderTypeEnum
+
+log = logging.getLogger(__name__)
 
 class ConfidantsService:
     confidantes = {}
 
-    def __init__(self):
-        self.confidantes["0"] = NarratorConfidant()
+    def set_confidant(self, key: str, confidant):
+        self.confidantes[key] = confidant
 
     def get_confidant(self, confidant_id: str):
         confidant = self.confidantes.get(confidant_id)
-        if confidant == None:
+        if confidant is None:
             raise ValueError("confidant not found")
         return confidant
 
 
 class NarratorConfidant:
-    def chat(self, chat: 'Chat') -> 'Message':
-        print(chat)
-        return Message(id=uuid4(),chat=chat, sender_type=SenderTypeEnum.CONFIDANT, sender="fixed",
-                       content="Hello world!")
+    class ConfidantSpec(BaseModel):
+        name: str
+        prompt: str
 
+    def __init__(self, client):
+        self.client = client
+        with open("./confidants/narrator.yaml", 'r') as stream:
+            self.spec = self.ConfidantSpec(**yaml.safe_load(stream))
 
-class ChatService:
-    async def create_chat(self, confidant: NarratorConfidant)->'Chat':
-        chat_id = uuid.uuid4()
-        chat_obj = await Chats.create(id=chat_id)
-        rep_msg = confidant.chat(chat_obj)
-        msg_obj = await Messages.create(**rep_msg.model_dump(exclude_unset=True,exclude="chat"),chat=chat_obj)
-        response.set_cookie(key=CHAT_COOKIE_KEY, value=str(chat_id))
-        data = await Chat.from_queryset_single(Chats.get(id=chat_id))
-        return chat
-
-
+    async def chat(self, chat: Chats) -> Message:
+        log.debug(chat)
+        msgs = [
+            {
+                "role": "system",
+                "content": self.spec.prompt,
+            }
+        ]
+        for msg in chat.messages:
+            role = "user"
+            if msg.sender_type is "confidant":
+                role = "assistant"
+            msgs.append({
+                "role": role,
+                "content": msg.content
+            })
+        chat_completion = await self.client.chat.completions.create(
+            messages=msgs,
+            model="gpt-35-turbo",
+        )
+        return Message(id=uuid4(), chat=chat, sender_type=SenderTypeEnum.CONFIDANT, sender="fixed",
+                       content=chat_completion.choices[0].message.content)

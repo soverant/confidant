@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useTheme } from '@mui/material/styles';
 import { FC, useMemo } from "react";
 
-interface BubbleProps {
+export interface BubbleProps {
   content?: string;
   type: "sent" | "received" | "system";
   avatar?: typeof Avatar;
@@ -34,11 +34,11 @@ export const Bubble: FC<BubbleProps> = (props) => {
         "flex-row justify-center": type === "system",
       })}
     >
-      <Stack direction={type === "received"?"row":"row-reverse"} spacing={2}>
+      {/* <Stack direction={type === "received"?"row":"row-reverse"} spacing={2}> */}
         {/* {renderAvatar()} */}
         <Box
           className={clsx(
-            "mt-10 rounded-md",
+            "mt-10 rounded-md flex-wrap x-overflow-hidden",
             {
               "p-4": type === "sent" || type === "received",
               "p-2": type === "system",
@@ -46,9 +46,9 @@ export const Bubble: FC<BubbleProps> = (props) => {
           )}
           sx={{bgcolor:backgroundColor}}
         >
-          <Typography className="max-w-md">{content}</Typography>
+          <Typography className="max-w-md text-wrap overflow-hidden">{content}</Typography>
         </Box>
-      </Stack>
+      {/* </Stack> */}
     </Box>
   );
 };

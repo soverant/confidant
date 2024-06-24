@@ -1,6 +1,5 @@
 from pydantic import BaseModel as PydanticBaseModel
-from typing import Optional, Literal
-import datetime
+from typing import Optional
 from tortoise import Tortoise
 from enum import Enum
 from tortoise import fields, models
@@ -45,5 +44,5 @@ class SuccessDTO(PydanticBaseModel):
 Tortoise.init_models(["chats.models"], "models")
 Chat = pydantic_model_creator(Chats, name="Chat")
 Message = pydantic_model_creator(Messages, name="Message")
-MessageIn = pydantic_model_creator(Messages, name="MessageIn", exclude=["chat","chat_id","id"])
+MessageIn = pydantic_model_creator(Messages, name="MessageIn", exclude=["chat","id"])
 
