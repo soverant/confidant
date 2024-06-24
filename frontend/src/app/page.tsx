@@ -14,6 +14,15 @@ import { Bubble, BubbleProps } from "./ui/Bubble";
 import { ChatInput } from "./ui/ChatInput";
 import { useEffect, useRef, useState } from "react";
 import { ChatData, Message, getChatData, sendMessage } from "./lib/chatapi";
+import { PosetFrom } from "./ui/PosetFrom";
+import {HorizontalScrollButtons} from "./ui/HorizontalScrollButtons";
+
+const items = [
+  { prompt: "Button 1", spec: "Spec 1", response: "Response 1" },
+  { prompt: "Button 2", spec: "Spec 2", response: "Response 2" },
+  { prompt: "Button 3", spec: "Spec 3", response: "Response 3" },
+  // Add more items as needed
+];
 // @ts-ignore
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -26,19 +35,19 @@ export default function Home() {
 
   const listRef = useRef(null);
 
-  useEffect(() => {
-    const _chatId = localStorage.getItem(CHAT_KEY);
+  // useEffect(() => {
+  //   const _chatId = localStorage.getItem(CHAT_KEY);
 
-    getChatData(
-      _chatId
-        ? `http://localhost:8000/chat/${_chatId}`
-        : "http://localhost:8000/chat/create/0"
-    ).then((data) => {
-      setChat(data);
-      setChatId(data.id);
-      localStorage.setItem(CHAT_KEY, data.id);
-    });
-  }, []);
+  //   getChatData(
+  //     _chatId
+  //       ? `http://localhost:8000/chat/${_chatId}`
+  //       : "http://localhost:8000/chat/create/0"
+  //   ).then((data) => {
+  //     setChat(data);
+  //     setChatId(data.id);
+  //     localStorage.setItem(CHAT_KEY, data.id);
+  //   });
+  // }, []);
 
   useEffect(() => {
     // @ts-ignore
@@ -66,14 +75,19 @@ export default function Home() {
         className="overflow-y-auto"
         maxWidth="lg"
       >
-        {!!chat &&
+        <PosetFrom />
+        <div>
+          <h1>Horizontal Scroll Buttons</h1>
+          <HorizontalScrollButtons items={items} />
+        </div>
+        {/* {!!chat &&
           chat.messages.map((i) => (
             <Bubble
               key={i.id}
               content={i.content}
               type={mapSenderType(i.sender_type)}
             ></Bubble>
-          ))}
+          ))} */}
       </Container>
       <Container
         sx={{ maxWidth: "lg" }}
