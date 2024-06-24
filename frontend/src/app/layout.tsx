@@ -13,15 +13,15 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className="h-screen overflow-hidden">
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <AppRouterCacheProvider>
+        <html lang="en">
+          <body className="h-screen overflow-hidden">
             <Header></Header>
             {children}
-          </ThemeProvider>
-        </AppRouterCacheProvider>
-      </body>
-    </html>
+          </body>
+        </html>
+      </AppRouterCacheProvider>
+    </ThemeProvider>
   );
 }
