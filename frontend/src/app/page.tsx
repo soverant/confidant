@@ -7,11 +7,12 @@ import {
   InputLabel,
   OutlinedInput,
   InputAdornment,
+  Container,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Bubble, BubbleProps } from "./ui/Bubble";
 import { ChatInput } from "./ui/ChatInput";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatData, Message, getChatData, sendMessage } from "./lib/chatapi";
 // @ts-ignore
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -22,6 +23,8 @@ export default function Home() {
   const user = "guest";
   const [chat, setChat] = useState<ChatData>();
   const [text, setText] = useState<string>();
+
+  const listRef = useRef(null);
 
   useEffect(() => {
     const _chatId = localStorage.getItem(CHAT_KEY);
@@ -35,7 +38,12 @@ export default function Home() {
       setChatId(data.id);
       localStorage.setItem(CHAT_KEY, data.id);
     });
-  },[]);
+  }, []);
+
+  useEffect(() => {
+    // @ts-ignore
+    listRef.current?.lastElementChild?.scrollIntoView();
+  }, [chat?.messages]);
 
   const mapSenderType = (
     sender: Message["sender_type"]
@@ -51,31 +59,46 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col flex-1 h-full">
-      <Box className="flex-grow mt-2">
+    <>
+      <Container
+        ref={listRef}
+        sx={{ maxHeight: "79%" }}
+        className="overflow-y-auto"
+        maxWidth="lg"
+      >
         {!!chat &&
           chat.messages.map((i) => (
             <Bubble
+              key={i.id}
               content={i.content}
               type={mapSenderType(i.sender_type)}
             ></Bubble>
           ))}
-      </Box>
-
-      <ChatInput
-        text={text}
-        onTextChange={setText}
-        onSend={() => {
-          if (chatId && text) {
-            sendMessage("http://localhost:8000/chat/", {
-              chat_id: chatId,
-              content: text,
-              sender_type: "user",
-              sender: user,
-            });
-          }
-        }}
-      />
-    </main>
+      </Container>
+      <Container
+        sx={{ maxWidth: "lg" }}
+        maxWidth="lg"
+        className="fixed bottom-0 left-0 right-0"
+        disableGutters
+      >
+        <ChatInput
+          text={text}
+          onTextChange={setText}
+          onSend={() => {
+            if (chatId && text) {
+              sendMessage("http://localhost:8000/chat/", {
+                chat_id: chatId,
+                content: text,
+                sender_type: "user",
+                sender: user,
+              }).then((data) => {
+                setChat(data);
+                setText("");
+              });
+            }
+          }}
+        />
+      </Container>
+    </>
   );
 }

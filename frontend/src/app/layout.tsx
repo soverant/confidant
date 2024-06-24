@@ -1,6 +1,6 @@
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-import { Box,Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/app/ui/theme";
 import Header from "@/app/ui/Header";
@@ -14,15 +14,11 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className="h-screen overflow-hidden">
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
-            <Box className="flex flex-col h-screen">
-              <Box>
-                <Header></Header>
-              </Box>
-              <Container className="flex-1 h-full"  maxWidth="lg">{children}</Container>
-            </Box>
+            <Header></Header>
+            {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
