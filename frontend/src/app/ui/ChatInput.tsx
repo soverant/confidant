@@ -21,13 +21,13 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
   const { actions, text, onTextChange, onSend } = props;
   return (
     <Box className="flex-1 flex flex-col justify-around ">
-      {/* {!!actions && actions.length > 0 && ( */}
-      <Box className=" px-2 py-1  flex flex-col justify-center">
-        <Button variant="contained" href="#contained-buttons">
-          Actions
-        </Button>
-      </Box>
-      {/* )} */}
+      {!!actions && actions.length > 0 && (
+        <Box className=" px-2 py-1  flex flex-col justify-center">
+          <Button variant="contained" href="#contained-buttons">
+            Actions
+          </Button>
+        </Box>
+      )}
       <div className="p-2">
         <FormControl variant="outlined" fullWidth>
           <OutlinedInput
