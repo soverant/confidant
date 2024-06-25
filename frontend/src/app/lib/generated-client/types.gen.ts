@@ -65,7 +65,7 @@ export type NodeUpdate = {
 
 export type Project = {
     id: number;
-    name: string;
+    title: string;
     description: string | null;
     root_node_id: number | null;
     created_at: string;
@@ -73,13 +73,13 @@ export type Project = {
 };
 
 export type ProjectCreate = {
-    name: string;
+    title: string;
     description?: string | null;
     root_node_id?: number | null;
 };
 
 export type ProjectUpdate = {
-    name?: string | null;
+    title?: string | null;
     description?: string | null;
     root_node_id?: number | null;
 };

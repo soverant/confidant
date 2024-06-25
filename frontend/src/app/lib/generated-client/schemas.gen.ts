@@ -337,9 +337,9 @@ export const $Project = {
             type: 'integer',
             title: 'Id'
         },
-        name: {
+        title: {
             type: 'string',
-            title: 'Name'
+            title: 'Title'
         },
         description: {
             anyOf: [
@@ -375,15 +375,15 @@ export const $Project = {
         }
     },
     type: 'object',
-    required: ['id', 'name', 'description', 'root_node_id', 'created_at', 'modified_at'],
+    required: ['id', 'title', 'description', 'root_node_id', 'created_at', 'modified_at'],
     title: 'Project'
 } as const;
 
 export const $ProjectCreate = {
     properties: {
-        name: {
+        title: {
             type: 'string',
-            title: 'Name'
+            title: 'Title'
         },
         description: {
             anyOf: [
@@ -409,13 +409,13 @@ export const $ProjectCreate = {
         }
     },
     type: 'object',
-    required: ['name'],
+    required: ['title'],
     title: 'ProjectCreate'
 } as const;
 
 export const $ProjectUpdate = {
     properties: {
-        name: {
+        title: {
             anyOf: [
                 {
                     type: 'string'
@@ -424,7 +424,7 @@ export const $ProjectUpdate = {
                     type: 'null'
                 }
             ],
-            title: 'Name'
+            title: 'Title'
         },
         description: {
             anyOf: [
