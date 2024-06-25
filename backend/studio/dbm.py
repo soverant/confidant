@@ -4,7 +4,7 @@ from .models import *
 
 log = logging.getLogger(__name__)
 
-current_version = 2  # Update this whenever you change the schema
+current_version = 4  # Update this whenever you change the schema
 
 
 class UnmanagedDatabase:
@@ -13,7 +13,7 @@ class UnmanagedDatabase:
     def init_db(self, url):
         self.database = Database(url)
 
-    def get_db(self):
+    def get_db(self)->Database:
         return self.database
 
     # Connect to the database
@@ -60,7 +60,7 @@ class UnmanagedDatabase:
         await self.database.execute("""
         CREATE TABLE IF NOT EXISTS project (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
+            title TEXT NOT NULL,
             description TEXT,
             root_node_id INTEGER,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
