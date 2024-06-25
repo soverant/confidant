@@ -13,16 +13,16 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider theme={theme}>
-      <AppRouterCacheProvider>
-        <CssBaseline enableColorScheme />
-        <html lang="en">
-          <body >
+    <html lang="en">
+      <body>
+        <ThemeProvider theme={theme}>
+          <AppRouterCacheProvider>
+            <CssBaseline enableColorScheme />
             <Header></Header>
             <main>{children}</main>
-          </body>
-        </html>
-      </AppRouterCacheProvider>
-    </ThemeProvider>
+          </AppRouterCacheProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

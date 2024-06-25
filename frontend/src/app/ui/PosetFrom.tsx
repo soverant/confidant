@@ -23,7 +23,7 @@ export const PosetFrom: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <>
       <Typography variant="h4" component="h1" gutterBottom>
         Knowledge Patent From
       </Typography>
@@ -56,6 +56,6 @@ export const PosetFrom: React.FC = () => {
           Submit
         </Button>
       </form>
-    </Container>
+      </>
   );
 };

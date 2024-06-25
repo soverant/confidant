@@ -158,7 +158,7 @@ const Header: React.FC = () => {
   );
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" >
       <Toolbar>
         <IconButton
           size="large"
