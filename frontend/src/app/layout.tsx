@@ -1,6 +1,6 @@
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-import { Box, Container } from "@mui/material";
+import { Box, Container, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/app/ui/theme";
 import Header from "@/app/ui/Header";
@@ -15,10 +15,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider theme={theme}>
       <AppRouterCacheProvider>
+        <CssBaseline enableColorScheme />
         <html lang="en">
-          <body className="h-screen overflow-hidden">
+          <body >
             <Header></Header>
-            {children}
+            <main>{children}</main>
           </body>
         </html>
       </AppRouterCacheProvider>
