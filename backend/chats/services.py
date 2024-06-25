@@ -4,7 +4,7 @@ import yaml
 
 from pydantic import BaseModel
 
-from .models import Chats, Message, SenderTypeEnum
+from .models import Chat, Message, SenderTypeEnum
 
 log = logging.getLogger(__name__)
 
@@ -31,8 +31,8 @@ class NarratorConfidant:
         with open("./confidants/narrator.yaml", 'r') as stream:
             self.spec = self.ConfidantSpec(**yaml.safe_load(stream))
 
-    async def chat(self, chat: Chats) -> Message:
-        log.debug(chat)
+    async def chat(self, chat: Chat) -> Message:
+        log.debug("calling gpt")
         msgs = [
             {
                 "role": "system",
