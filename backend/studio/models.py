@@ -44,20 +44,20 @@ class Edge(BaseModel):
 
 
 class ProjectCreate(BaseModel):
-    name: str
+    title: str
     description: Optional[str] = None
     root_node_id: Optional[int] = None
 
 
 class ProjectUpdate(BaseModel):
-    name: Optional[str] = None
+    title: Optional[str] = None
     description: Optional[str] = None
     root_node_id: Optional[int] = None
 
 
 class Project(BaseModel):
     id: int
-    name: str
+    title: str
     description: Optional[str]
     root_node_id: Optional[int]
     created_at: datetime
