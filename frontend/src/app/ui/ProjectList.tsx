@@ -6,7 +6,15 @@ import {
   Paper,
   Typography,
   CircularProgress,
+  List,
+  ListItem,
+  ListItemText,
+  Card,
+  CardContent,
+  Divider,
+  ListSubheader,
 } from "@mui/material";
+import Link from "next/link";
 import { Project } from "@/app/lib/generated-client/types.gen";
 import { Services } from "@/app/lib/client";
 
@@ -15,8 +23,7 @@ const ProjectList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    Services
-      .readAllProjectsApiStudioProjectsGet()
+    Services.readAllProjectsApiStudioProjectsGet()
       .then((value) => {
         setProjects(value);
         setLoading(false);
@@ -36,18 +43,20 @@ const ProjectList: React.FC = () => {
   }
 
   return (
-    <Container>
-      <Grid container spacing={2}>
-        {projects.map((project, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Paper elevation={3} style={{ padding: "16px" }}>
-              <Typography variant="h6">{project.title}</Typography>
-              <Typography variant="body2">{project.description}</Typography>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <List>
+      <ListSubheader component="div" id="nested-list-subheader">
+        Project List
+      </ListSubheader>
+      {projects.map((project, index) => (
+        <Link key={project.id} href={`/studio/poset/${project.id}`}>
+          <ListItemText
+            primary={project.title}
+            secondary={project.description}
+          ></ListItemText>
+          {projects.length !== index + 1 && <Divider component="li" />}
+        </Link>
+      ))}
+    </List>
   );
 };
 

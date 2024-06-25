@@ -1,4 +1,5 @@
 // components/PosetFrom.tsx
+'use client'
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography } from '@mui/material';
 
@@ -25,7 +26,7 @@ export const PosetFrom: React.FC = () => {
   return (
     <>
       <Typography variant="h4" component="h1" gutterBottom>
-        Knowledge Patent From
+        Poset From
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField

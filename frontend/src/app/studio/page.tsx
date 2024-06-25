@@ -17,8 +17,8 @@ export default function StudioHome() {
   return (
     <>
        
-      <ProjectList />
       <ProjectForm />
+      <ProjectList />
     </>
   );
 }
