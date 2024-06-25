@@ -30,5 +30,8 @@
     "swr": "^2.2.5",
     "tailwindcss": "3.4.4",
     "typescript": "5.4.5"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "^0.48.0"
   }
 }

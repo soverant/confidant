@@ -1,0 +1,64 @@
+from datetime import datetime
+
+from pydantic import BaseModel
+from typing import Optional
+
+
+class NodeCreate(BaseModel):
+    prompt: Optional[str]
+    response: Optional[str]
+    title: str
+
+
+class NodeUpdate(BaseModel):
+    title: Optional[str]
+    prompt: Optional[str] = None
+    response: Optional[str] = None
+
+
+class Node(BaseModel):
+    id: int
+    title: str
+    prompt: Optional[str]
+    response: Optional[str]
+    created_at: datetime
+    modified_at: datetime
+
+
+class EdgeCreate(BaseModel):
+    from_node: int
+    to_node: int
+
+
+class EdgeUpdate(BaseModel):
+    from_node: Optional[int] = None
+    to_node: Optional[int] = None
+
+
+class Edge(BaseModel):
+    id: int
+    from_node: int
+    to_node: int
+    created_at: datetime
+    modified_at: datetime
+
+
+class ProjectCreate(BaseModel):
+    name: str
+    description: Optional[str] = None
+    root_node_id: Optional[int] = None
+
+
+class ProjectUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    root_node_id: Optional[int] = None
+
+
+class Project(BaseModel):
+    id: int
+    name: str
+    description: Optional[str]
+    root_node_id: Optional[int]
+    created_at: datetime
+    modified_at: datetime
