@@ -1,9 +1,9 @@
 "use client";
-import { Container } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
-import { ChatData, Message, sendMessage } from "@/app/lib/chatapi";
+import { Button, Toolbar } from "@mui/material";
 import { PosetFrom } from "@/app/ui/PosetFrom";
 import { HorizontalScrollButtons } from "@/app/ui/HorizontalScrollButtons";
+import ProjectList from "@/app/ui/ProjectList";
+import {ProjectForm} from "@/app/ui/ProjectForm";
 
 const items = [
   { prompt: "Button 1", spec: "Spec 1", response: "Response 1" },
@@ -12,15 +12,13 @@ const items = [
   // Add more items as needed
 ];
 
-export default function PosetHome() {
+export default function StudioHome() {
 
   return (
-    <Container maxWidth="lg">
-      <PosetFrom />
-      <div>
-        <h1>Horizontal Scroll Buttons</h1>
-        <HorizontalScrollButtons items={items} />
-      </div>
-    </Container>
+    <>
+       
+      <ProjectList />
+      <ProjectForm />
+    </>
   );
 }
