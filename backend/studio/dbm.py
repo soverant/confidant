@@ -4,7 +4,7 @@ from .models import *
 
 log = logging.getLogger(__name__)
 
-current_version = 4  # Update this whenever you change the schema
+current_version = 5  # Update this whenever you change the schema
 
 
 class UnmanagedDatabase:
@@ -36,6 +36,7 @@ class UnmanagedDatabase:
         CREATE TABLE IF NOT EXISTS nodes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
+            spec TEXT,
             prompt TEXT,
             response TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

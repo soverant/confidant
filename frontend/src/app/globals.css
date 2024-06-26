@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+.prose {
+  font-family: "Inter", sans-serif;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.mdx {
+  min-height: 50vh;
+}
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

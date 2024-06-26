@@ -45,22 +45,25 @@ export type MessageIn = {
 export type Node = {
     id: number;
     title: string;
-    prompt: string | null;
-    response: string | null;
+    prompt?: string | null;
+    response?: string | null;
+    spec?: string | null;
     created_at: string;
     modified_at: string;
 };
 
 export type NodeCreate = {
-    prompt: string | null;
-    response: string | null;
     title: string;
+    prompt?: string | null;
+    response?: string | null;
+    spec?: string | null;
 };
 
 export type NodeUpdate = {
-    title: string | null;
+    title?: string | null;
     prompt?: string | null;
     response?: string | null;
+    spec?: string | null;
 };
 
 export type Project = {

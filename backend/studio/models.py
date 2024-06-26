@@ -5,22 +5,25 @@ from typing import Optional
 
 
 class NodeCreate(BaseModel):
-    prompt: Optional[str]
-    response: Optional[str]
     title: str
+    prompt: Optional[str] = None
+    response: Optional[str] = None
+    spec: Optional[str] = None
 
 
 class NodeUpdate(BaseModel):
-    title: Optional[str]
+    title: Optional[str] = None
     prompt: Optional[str] = None
     response: Optional[str] = None
+    spec: Optional[str] = None
 
 
 class Node(BaseModel):
     id: int
     title: str
-    prompt: Optional[str]
-    response: Optional[str]
+    prompt: Optional[str] = None
+    response: Optional[str] = None
+    spec: Optional[str] = None
     created_at: datetime
     modified_at: datetime
 

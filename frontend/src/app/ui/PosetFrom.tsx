@@ -1,62 +1,108 @@
 // components/PosetFrom.tsx
-'use client'
-import React, { useState } from 'react';
-import { TextField, Button, Container, Typography } from '@mui/material';
+"use client";
+import { FC, useState, ForwardedRef } from "react";
+import { TextField, Button, Container, Typography } from "@mui/material";
 
-export const PosetFrom: React.FC = () => {
-  const [formValues, setFormValues] = useState({
-    field1: '',
-    field2: '',
-    field3: ''
-  });
+export interface PosetFromProps {
+  onSubmit?: () => void;
+  id: number;
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value
-    });
+import * as React from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import { ForwardRefEditor } from "./MDXEditor/ForwardRefEditor";
+import "@mdxeditor/editor/style.css";
+import { usePoset } from "../lib/hooks/poset";
+import { Services } from "../lib/client";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `editor-tab-${index}`,
+    "aria-controls": `editor-tabpanel-${index}`,
+  };
+}
+
+type Field = "spec" | "prompt" | "response";
+
+export const PosetFrom: FC<PosetFromProps> = (props) => {
+  const { id, onSubmit = () => {} } = props;
+  const { poset, isError, isLoading } = usePoset(id);
+
+  const [spec, setSpec] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState("");
+
+  const [selectedTab, setSelectedTab] = useState<Field>("spec");
+  const handleTabChange = (event: React.SyntheticEvent, newValue: Field) => {
+    console.log(newValue);
+    setSelectedTab(newValue);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form submitted:', formValues);
+    Services.updateNodeApiStudioPosetNodesNodeIdPut({
+      nodeId: id,
+      requestBody: { spec, prompt, response },
+    });
   };
+
+  React.useEffect(() => {
+    if (poset) {
+      setSpec(poset?.spec || "");
+      setPrompt(poset?.prompt || "");
+      setResponse(poset?.response || "");
+    }
+  }, [poset]);
 
   return (
     <>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Poset From
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Problem Spec"
-          name="spec"
-          value={formValues.field1}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Prompt"
-          name="prompt"
-          value={formValues.field2}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Response"
-          name="response"
-          value={formValues.field3}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <Button type="submit" variant="contained" color="primary">
-          Submit
-        </Button>
-      </form>
-      </>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          aria-label="poset editor"
+        >
+          <Tab value="spec" label="Problem Spec" {...a11yProps(0)} />
+          <Tab value="prompt" label="Prompt" {...a11yProps(1)} />
+          <Tab value="response" label="Response" {...a11yProps(2)} />
+          <Box className="flex-grow" />
+          <Button onClick={handleSubmit}>Save</Button>
+        </Tabs>
+      </Box>
+      <Box>
+        {selectedTab === "spec" && (
+          <ForwardRefEditor
+            className="mdx dark-theme"
+            contentEditableClassName="prose"
+            markdown={spec}
+            onChange={(value) => setSpec(value)}
+          />
+        )}
+        {selectedTab === "prompt" && (
+          <ForwardRefEditor
+            className="mdx dark-theme"
+            contentEditableClassName="prose"
+            markdown={prompt}
+            onChange={(value) => setPrompt(value)}
+          />
+        )}
+        {selectedTab === "response" && (
+          <ForwardRefEditor
+            className="mdx dark-theme"
+            contentEditableClassName="prose"
+            markdown={response}
+            onChange={(value) => setResponse(value)}
+          />
+        )}
+      </Box>
+    </>
   );
 };

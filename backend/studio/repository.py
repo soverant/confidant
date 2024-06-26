@@ -7,13 +7,15 @@ log = logging.getLogger(__name__)
 
 
 class NodeRepository:
+    @classmethod
+    async def create_node(cls, title: str, spec: Optional[str] = None, prompt: Optional[str] = None, response: Optional[str] = None) -> int:
+        query = "INSERT INTO nodes (title, spec, prompt, response) VALUES (:title, :spec, :prompt, :response)"
+        values = {"title": title, "spec": spec, "prompt": prompt, "response": response}
+        id = await database.get_db().execute(query, values)
+        return await cls.get_node(id)
 
-    async def create_node(self, title: str, prompt: Optional[str] = None, response: Optional[str] = None) -> int:
-        query = "INSERT INTO nodes (prompt, response) VALUES (:prompt, :response)"
-        values = {"title": title, "prompt": prompt, "response": response}
-        return await database.get_db().execute(query, values)
-
-    async def get_node(self, node_id: int) -> Optional[dict]:
+    @classmethod
+    async def get_node(cls, node_id: int) -> Optional[dict]:
         query = "SELECT * FROM nodes WHERE id = :node_id"
         return await database.get_db().fetch_one(query, {"node_id": node_id})
 
@@ -21,15 +23,18 @@ class NodeRepository:
         query = "SELECT * FROM nodes"
         return await database.get_db().fetch_all(query)
 
-    async def update_node(self, node_id: int, prompt: Optional[str] = None, response: Optional[str] = None) -> int:
-        values = {"prompt": prompt, "response": response, "node_id": node_id}
+    async def update_node(cls, node_id: int, title: Optional[str] = None, spec: Optional[str] = None, prompt: Optional[str] = None, response: Optional[str] = None) -> int:
+        values = {"title": title, "spec": spec,"prompt": prompt, "response": response, "node_id": node_id}
         query = """
         UPDATE nodes SET 
+            title = COALESCE(:title, title),
+            spec = COALESCE(:spec, spec),
             prompt = COALESCE(:prompt, prompt),
             response = COALESCE(:response, response)
         WHERE id = :node_id
         """
-        return await database.get_db().execute(query, values)
+        id = await database.get_db().execute(query, values)
+        return await cls.get_node(id)
 
     async def delete_node(self, node_id: int) -> int:
         query = "DELETE FROM nodes WHERE id = :node_id"
@@ -56,7 +61,8 @@ class NodeRepository:
 
 class EdgeRepository:
 
-    async def create_edge(self, from_node: int, to_node: int) -> int:
+    @staticmethod
+    async def create_edge(from_node: int, to_node: int) -> int:
         query = "INSERT INTO edges (from_node, to_node) VALUES (:from_node, :to_node)"
         values = {"from_node": from_node, "to_node": to_node}
         return await database.get_db().execute(query, values)
@@ -88,6 +94,10 @@ class ProjectRepository:
 
     async def create_project(self, title: str, description: Optional[str] = None,
                              root_node_id: Optional[int] = None) -> int:
+        if root_node_id is None:                             
+            root_node = await NodeRepository.create_node(title)
+        root_node_id = root_node["id"]
+
         query = """
         INSERT INTO project (title, description, root_node_id) 
         VALUES (:title, :description, :root_node_id)

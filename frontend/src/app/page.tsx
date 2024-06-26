@@ -1,20 +1,12 @@
 "use client";
-import { Box, Container } from "@mui/material";
+import { Box, Button, Container, IconButton } from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import { Bubble, BubbleProps } from "./ui/Bubble";
 import { ChatInput } from "./ui/ChatInput";
 import { useEffect, useRef, useState } from "react";
 import { ChatData, Message, getChatData, sendMessage } from "./lib/chatapi";
 import { CHAT_KEY } from "./lib/constants";
-
-const items = [
-  { prompt: "Button 1", spec: "Spec 1", response: "Response 1" },
-  { prompt: "Button 2", spec: "Spec 2", response: "Response 2" },
-  { prompt: "Button 3", spec: "Spec 3", response: "Response 3" },
-  // Add more items as needed
-];
-// @ts-ignore
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
+import Header from "./ui/Header";
 
 export default function Home() {
   const [chatId, setChatId] = useState<string>();
@@ -57,34 +49,49 @@ export default function Home() {
   };
 
   return (
-    <Container  maxWidth="lg">
-      <Box  ref={listRef} className="p-5 h-[calc(100vh-225px)] overflow-y-auto" sx={{scrollbarWidth:"thin"}}>
-        {!!chat &&
-          chat.messages.map((i) => (
-            <Bubble
-              key={i.id}
-              content={i.content}
-              type={mapSenderType(i.sender_type)}
-            ></Bubble>
-          ))}
+    <>
+      <Header
+        title="Soverant"
+        right={() => (
+          <Box>
+            <Button variant="text">Skip</Button>
+          </Box>
+        )}
+      ></Header>
+      <Box
+        sx={{ scrollbarWidth: "thin" }}
+        className="h-[calc(100vh-225px)] overflow-y-auto"
+      >
+        <Container  ref={listRef} maxWidth="lg">
+          {!!chat &&
+            chat.messages.map((i) => (
+              <Bubble
+                key={i.id}
+                content={i.content}
+                type={mapSenderType(i.sender_type)}
+              ></Bubble>
+            ))}
+        </Container>
       </Box>
-      <ChatInput
-        text={text}
-        onTextChange={setText}
-        onSend={() => {
-          if (chatId && text) {
-            sendMessage("http://localhost:8000/chat/", {
-              chat_id: chatId,
-              content: text,
-              sender_type: "user",
-              sender: user,
-            }).then((data) => {
-              setChat(data);
-              setText("");
-            });
-          }
-        }}
-      />
-    </Container>
+      <Container maxWidth="lg">
+        <ChatInput
+          text={text}
+          onTextChange={setText}
+          onSend={() => {
+            if (chatId && text) {
+              sendMessage("http://localhost:8000/chat/", {
+                chat_id: chatId,
+                content: text,
+                sender_type: "user",
+                sender: user,
+              }).then((data) => {
+                setChat(data);
+                setText("");
+              });
+            }
+          }}
+        />
+      </Container>
+    </>
   );
 }

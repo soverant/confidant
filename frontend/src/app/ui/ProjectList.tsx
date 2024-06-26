@@ -48,7 +48,7 @@ const ProjectList: React.FC = () => {
         Project List
       </ListSubheader>
       {projects.map((project, index) => (
-        <Link key={project.id} href={`/studio/poset/${project.id}`}>
+        <Link key={project.id} href={`/studio/poset/${project.root_node_id}`}>
           <ListItemText
             primary={project.title}
             secondary={project.description}

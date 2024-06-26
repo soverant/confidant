@@ -18,7 +18,7 @@ project_repo = ProjectRepository()
 
 @router.post("/poset/nodes/", response_model=Node)
 async def create_node(node: NodeCreate):
-    return await node.create_node(**node.dict())
+    return await node_repo.create_node(**node.dict())
 
 
 @router.get("/poset/nodes/{node_id}", response_model=Node)

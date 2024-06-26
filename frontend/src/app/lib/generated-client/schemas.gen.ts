@@ -240,6 +240,17 @@ export const $Node = {
             ],
             title: 'Response'
         },
+        spec: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Spec'
+        },
         created_at: {
             type: 'string',
             format: 'date-time',
@@ -252,12 +263,16 @@ export const $Node = {
         }
     },
     type: 'object',
-    required: ['id', 'title', 'prompt', 'response', 'created_at', 'modified_at'],
+    required: ['id', 'title', 'created_at', 'modified_at'],
     title: 'Node'
 } as const;
 
 export const $NodeCreate = {
     properties: {
+        title: {
+            type: 'string',
+            title: 'Title'
+        },
         prompt: {
             anyOf: [
                 {
@@ -280,13 +295,20 @@ export const $NodeCreate = {
             ],
             title: 'Response'
         },
-        title: {
-            type: 'string',
-            title: 'Title'
+        spec: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Spec'
         }
     },
     type: 'object',
-    required: ['prompt', 'response', 'title'],
+    required: ['title'],
     title: 'NodeCreate'
 } as const;
 
@@ -324,10 +346,20 @@ export const $NodeUpdate = {
                 }
             ],
             title: 'Response'
+        },
+        spec: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Spec'
         }
     },
     type: 'object',
-    required: ['title'],
     title: 'NodeUpdate'
 } as const;
 

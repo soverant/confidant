@@ -1,23 +1,47 @@
 "use client";
-import { Button, Toolbar } from "@mui/material";
-import { PosetFrom } from "@/app/ui/PosetFrom";
-import { HorizontalScrollButtons } from "@/app/ui/HorizontalScrollButtons";
+import { useState } from "react";
 import ProjectList from "@/app/ui/ProjectList";
-import {ProjectForm} from "@/app/ui/ProjectForm";
-
-const items = [
-  { prompt: "Button 1", spec: "Spec 1", response: "Response 1" },
-  { prompt: "Button 2", spec: "Spec 2", response: "Response 2" },
-  { prompt: "Button 3", spec: "Spec 3", response: "Response 3" },
-  // Add more items as needed
-];
+import { ProjectForm } from "@/app/ui/ProjectForm";
+import Header from "@/app/ui/Header";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Modal,
+  TextField,
+} from "@mui/material";
 
 export default function StudioHome() {
+  const [openForm, setOpenForm] = useState(false);
+  const handleCloseFrom = () => {
+    setOpenForm(false);
+  };
+
+  const handleOpenFrom = (_e: any) => {
+    setOpenForm(true);
+  };
 
   return (
     <>
-       
-      <ProjectForm />
+      <Header
+        title="Soverant"
+        right={() => (
+          <Box>
+            <Button variant="text" onClick={handleOpenFrom}>
+              New Project
+            </Button>
+          </Box>
+        )}
+      ></Header>
+      <Dialog open={openForm} onClose={handleCloseFrom}>
+        <DialogContent>
+          <ProjectForm onSubmit={handleCloseFrom} />
+        </DialogContent>
+      </Dialog>
       <ProjectList />
     </>
   );
