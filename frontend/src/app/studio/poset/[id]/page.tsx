@@ -4,14 +4,22 @@ import { usePosetChildrens, usePosetParents } from "@/app/lib/hooks/poset";
 import { PosetFrom } from "@/app/ui/PosetFrom";
 import { PosetHorizontalList } from "@/app/ui/PosetHorizontalList";
 import { ProjectForm } from "@/app/ui/ProjectForm";
-import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 import { Suspense, useState } from "react";
 
 export default function Poset({ params }: { params: { id: string } }) {
   const childrens = usePosetChildrens(Number(params.id));
   const parents = usePosetParents(Number(params.id));
   const [openForm, setOpenForm] = useState(false);
-  const [newPosetTitle, setNewPosetTitle] = useState("")
+  const [newPosetTitle, setNewPosetTitle] = useState("");
   const handleCloseFrom = () => {
     setOpenForm(false);
   };
@@ -21,14 +29,20 @@ export default function Poset({ params }: { params: { id: string } }) {
   };
 
   const newChild = async () => {
-    const  newNode = await Services.createNodeApiStudioPosetNodesPost({requestBody:{title:newPosetTitle}})
-    await Services.createEdgeApiStudioPosetEdgesPost({requestBody:{from_node:Number(params.id),to_node:newNode.id}})
-    childrens.mutate()
+    const newNode = await Services.createNodeApiStudioPosetNodesPost({
+      requestBody: { title: newPosetTitle },
+    });
+    await Services.createEdgeApiStudioPosetEdgesPost({
+      requestBody: { from_node: Number(params.id), to_node: newNode.id },
+    });
+    childrens.mutate();
   };
 
-  const handleNewPosetTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNewPosetTitleChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { value } = e.target;
-    setNewPosetTitle(value)
+    setNewPosetTitle(value);
   };
 
   const renderNewChildModalForm = () => {
@@ -36,14 +50,14 @@ export default function Poset({ params }: { params: { id: string } }) {
       <Dialog open={openForm} onClose={handleCloseFrom}>
         <DialogTitle>New Child</DialogTitle>
         <DialogContent>
-        <TextField
-          label="Problem Spec"
-          name="spec"
-          value={newPosetTitle}
-          onChange={handleNewPosetTitleChange}
-          fullWidth
-          margin="normal"
-        />
+          <TextField
+            label="Problem Spec"
+            name="spec"
+            value={newPosetTitle}
+            onChange={handleNewPosetTitleChange}
+            fullWidth
+            margin="normal"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseFrom}>Cancel</Button>
@@ -58,8 +72,10 @@ export default function Poset({ params }: { params: { id: string } }) {
       <Suspense>
         <PosetHorizontalList items={parents.parents} />
       </Suspense>
-      <PosetFrom id={params.id} />
-      <Button onClick={handleOpenFrom}>Add child</Button>
+      <PosetFrom id={Number(params.id)} />
+      <div>
+        <Button onClick={handleOpenFrom}>Add child</Button>
+      </div>
       <Suspense>
         <PosetHorizontalList items={childrens.childrens} />
       </Suspense>
