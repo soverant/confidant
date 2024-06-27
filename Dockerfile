@@ -29,7 +29,7 @@ RUN apt-get update && \
 # Set the working directory
 WORKDIR /app
 
-RUN python -m venv /opt/venv
+RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
  
 RUN pip install mitmproxy
