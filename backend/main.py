@@ -16,7 +16,6 @@ from logger import setup_logger
 from studio import studio
 from studio.dbm import get_database
 
-
 conf = get_config()
 
 
@@ -44,7 +43,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             azure_endpoint="https://mlk-openai-farhoud.openai.azure.com/",
         )
         confidant = NarratorConfidant(client)
-        confidants_service.set_confidant("0",confidant)
+        confidants_service.set_confidant("0", confidant)
         yield
         # app teardown
         await umdatabase.disconnect_from_database()
