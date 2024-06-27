@@ -12,7 +12,7 @@ RUN npm install
 
 # Copy the rest of the application source code
 COPY ./frontend/ .
-
+ENV NEXT_PUBLIC_API_BASE_URL http://localhost:8001
 # Build the Next.js application
 RUN npm run build
 
@@ -28,7 +28,7 @@ RUN pip install mitmproxy
 
 # Set the working directory
 WORKDIR /app
-
+ 
 COPY ./backend/ ./backend
 COPY ./main.py .
 COPY ./mitmproxy_reverse_proxy.py .
