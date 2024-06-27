@@ -62,6 +62,18 @@ export const $Chat = {
     title: 'Chat'
 } as const;
 
+export const $CreateUpdateDeleteSuccessful = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        }
+    },
+    type: 'object',
+    required: ['id'],
+    title: 'CreateUpdateDeleteSuccessful'
+} as const;
+
 export const $Edge = {
     properties: {
         id: {

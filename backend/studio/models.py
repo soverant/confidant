@@ -65,3 +65,7 @@ class Project(BaseModel):
     root_node_id: Optional[int]
     created_at: datetime
     modified_at: datetime
+
+
+class CreateUpdateDeleteSuccessful(BaseModel):
+    id: int

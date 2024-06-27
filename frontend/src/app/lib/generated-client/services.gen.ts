@@ -19,7 +19,7 @@ export const readAllNodesApiStudioPosetNodesGet = (): CancelablePromise<ReadAllN
  * Create Node
  * @param data The data for the request.
  * @param data.requestBody
- * @returns Node Successful Response
+ * @returns CreateUpdateDeleteSuccessful Successful Response
  * @throws ApiError
  */
 export const createNodeApiStudioPosetNodesPost = (data: CreateNodeApiStudioPosetNodesPostData): CancelablePromise<CreateNodeApiStudioPosetNodesPostResponse> => { return __request(OpenAPI, {
@@ -55,7 +55,7 @@ export const readNodeApiStudioPosetNodesNodeIdGet = (data: ReadNodeApiStudioPose
  * @param data The data for the request.
  * @param data.nodeId
  * @param data.requestBody
- * @returns Node Successful Response
+ * @returns void Successful Response
  * @throws ApiError
  */
 export const updateNodeApiStudioPosetNodesNodeIdPut = (data: UpdateNodeApiStudioPosetNodesNodeIdPutData): CancelablePromise<UpdateNodeApiStudioPosetNodesNodeIdPutResponse> => { return __request(OpenAPI, {
@@ -75,7 +75,7 @@ export const updateNodeApiStudioPosetNodesNodeIdPut = (data: UpdateNodeApiStudio
  * Delete Node
  * @param data The data for the request.
  * @param data.nodeId
- * @returns number Successful Response
+ * @returns void Successful Response
  * @throws ApiError
  */
 export const deleteNodeApiStudioPosetNodesNodeIdDelete = (data: DeleteNodeApiStudioPosetNodesNodeIdDeleteData): CancelablePromise<DeleteNodeApiStudioPosetNodesNodeIdDeleteResponse> => { return __request(OpenAPI, {
@@ -139,7 +139,7 @@ export const readAllEdgesApiStudioPosetEdgesGet = (): CancelablePromise<ReadAllE
  * Create Edge
  * @param data The data for the request.
  * @param data.requestBody
- * @returns Edge Successful Response
+ * @returns CreateUpdateDeleteSuccessful Successful Response
  * @throws ApiError
  */
 export const createEdgeApiStudioPosetEdgesPost = (data: CreateEdgeApiStudioPosetEdgesPostData): CancelablePromise<CreateEdgeApiStudioPosetEdgesPostResponse> => { return __request(OpenAPI, {
@@ -175,7 +175,7 @@ export const readEdgeApiStudioPosetEdgesEdgeIdGet = (data: ReadEdgeApiStudioPose
  * @param data The data for the request.
  * @param data.edgeId
  * @param data.requestBody
- * @returns Edge Successful Response
+ * @returns void Successful Response
  * @throws ApiError
  */
 export const updateEdgeApiStudioPosetEdgesEdgeIdPut = (data: UpdateEdgeApiStudioPosetEdgesEdgeIdPutData): CancelablePromise<UpdateEdgeApiStudioPosetEdgesEdgeIdPutResponse> => { return __request(OpenAPI, {
@@ -195,7 +195,7 @@ export const updateEdgeApiStudioPosetEdgesEdgeIdPut = (data: UpdateEdgeApiStudio
  * Delete Edge
  * @param data The data for the request.
  * @param data.edgeId
- * @returns number Successful Response
+ * @returns void Successful Response
  * @throws ApiError
  */
 export const deleteEdgeApiStudioPosetEdgesEdgeIdDelete = (data: DeleteEdgeApiStudioPosetEdgesEdgeIdDeleteData): CancelablePromise<DeleteEdgeApiStudioPosetEdgesEdgeIdDeleteResponse> => { return __request(OpenAPI, {
@@ -223,7 +223,7 @@ export const readAllProjectsApiStudioProjectsGet = (): CancelablePromise<ReadAll
  * Create Project
  * @param data The data for the request.
  * @param data.requestBody
- * @returns Project Successful Response
+ * @returns CreateUpdateDeleteSuccessful Successful Response
  * @throws ApiError
  */
 export const createProjectApiStudioProjectsPost = (data: CreateProjectApiStudioProjectsPostData): CancelablePromise<CreateProjectApiStudioProjectsPostResponse> => { return __request(OpenAPI, {
@@ -259,7 +259,7 @@ export const readProjectApiStudioProjectsProjectIdGet = (data: ReadProjectApiStu
  * @param data The data for the request.
  * @param data.projectId
  * @param data.requestBody
- * @returns Project Successful Response
+ * @returns void Successful Response
  * @throws ApiError
  */
 export const updateProjectApiStudioProjectsProjectIdPut = (data: UpdateProjectApiStudioProjectsProjectIdPutData): CancelablePromise<UpdateProjectApiStudioProjectsProjectIdPutResponse> => { return __request(OpenAPI, {
@@ -279,7 +279,7 @@ export const updateProjectApiStudioProjectsProjectIdPut = (data: UpdateProjectAp
  * Delete Project
  * @param data The data for the request.
  * @param data.projectId
- * @returns number Successful Response
+ * @returns void Successful Response
  * @throws ApiError
  */
 export const deleteProjectApiStudioProjectsProjectIdDelete = (data: DeleteProjectApiStudioProjectsProjectIdDeleteData): CancelablePromise<DeleteProjectApiStudioProjectsProjectIdDeleteResponse> => { return __request(OpenAPI, {

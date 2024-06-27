@@ -46,12 +46,12 @@
           "required": true
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Node"
+                  "$ref": "#/components/schemas/CreateUpdateDeleteSuccessful"
                 }
               }
             }
@@ -138,15 +138,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Node"
-                }
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -178,16 +171,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "title": "Response Delete Node Api Studio Poset Nodes  Node Id  Delete"
-                }
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -340,7 +325,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Edge"
+                  "$ref": "#/components/schemas/CreateUpdateDeleteSuccessful"
                 }
               }
             }
@@ -427,15 +412,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Edge"
-                }
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -467,16 +445,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "title": "Response Delete Edge Api Studio Poset Edges  Edge Id  Delete"
-                }
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -537,7 +507,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Project"
+                  "$ref": "#/components/schemas/CreateUpdateDeleteSuccessful"
                 }
               }
             }
@@ -624,15 +594,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Project"
-                }
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -664,16 +627,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "title": "Response Delete Project Api Studio Projects  Project Id  Delete"
-                }
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -880,6 +835,19 @@
           "messages"
         ],
         "title": "Chat"
+      },
+      "CreateUpdateDeleteSuccessful": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "CreateUpdateDeleteSuccessful"
       },
       "Edge": {
         "properties": {

@@ -8,6 +8,10 @@ export type Chat = {
     messages: Array<leaf>;
 };
 
+export type CreateUpdateDeleteSuccessful = {
+    id: number;
+};
+
 export type Edge = {
     id: number;
     from_node: number;
@@ -111,7 +115,7 @@ export type CreateNodeApiStudioPosetNodesPostData = {
     requestBody: NodeCreate;
 };
 
-export type CreateNodeApiStudioPosetNodesPostResponse = Node;
+export type CreateNodeApiStudioPosetNodesPostResponse = CreateUpdateDeleteSuccessful;
 
 export type ReadNodeApiStudioPosetNodesNodeIdGetData = {
     nodeId: number;
@@ -124,13 +128,13 @@ export type UpdateNodeApiStudioPosetNodesNodeIdPutData = {
     requestBody: NodeUpdate;
 };
 
-export type UpdateNodeApiStudioPosetNodesNodeIdPutResponse = Node;
+export type UpdateNodeApiStudioPosetNodesNodeIdPutResponse = void;
 
 export type DeleteNodeApiStudioPosetNodesNodeIdDeleteData = {
     nodeId: number;
 };
 
-export type DeleteNodeApiStudioPosetNodesNodeIdDeleteResponse = number;
+export type DeleteNodeApiStudioPosetNodesNodeIdDeleteResponse = void;
 
 export type ReadNodeChildrenApiStudioPosetNodesNodeIdChildrenGetData = {
     nodeId: number;
@@ -150,7 +154,7 @@ export type CreateEdgeApiStudioPosetEdgesPostData = {
     requestBody: EdgeCreate;
 };
 
-export type CreateEdgeApiStudioPosetEdgesPostResponse = Edge;
+export type CreateEdgeApiStudioPosetEdgesPostResponse = CreateUpdateDeleteSuccessful;
 
 export type ReadEdgeApiStudioPosetEdgesEdgeIdGetData = {
     edgeId: number;
@@ -163,13 +167,13 @@ export type UpdateEdgeApiStudioPosetEdgesEdgeIdPutData = {
     requestBody: EdgeUpdate;
 };
 
-export type UpdateEdgeApiStudioPosetEdgesEdgeIdPutResponse = Edge;
+export type UpdateEdgeApiStudioPosetEdgesEdgeIdPutResponse = void;
 
 export type DeleteEdgeApiStudioPosetEdgesEdgeIdDeleteData = {
     edgeId: number;
 };
 
-export type DeleteEdgeApiStudioPosetEdgesEdgeIdDeleteResponse = number;
+export type DeleteEdgeApiStudioPosetEdgesEdgeIdDeleteResponse = void;
 
 export type ReadAllProjectsApiStudioProjectsGetResponse = Array<Project>;
 
@@ -177,7 +181,7 @@ export type CreateProjectApiStudioProjectsPostData = {
     requestBody: ProjectCreate;
 };
 
-export type CreateProjectApiStudioProjectsPostResponse = Project;
+export type CreateProjectApiStudioProjectsPostResponse = CreateUpdateDeleteSuccessful;
 
 export type ReadProjectApiStudioProjectsProjectIdGetData = {
     projectId: number;
@@ -190,13 +194,13 @@ export type UpdateProjectApiStudioProjectsProjectIdPutData = {
     requestBody: ProjectUpdate;
 };
 
-export type UpdateProjectApiStudioProjectsProjectIdPutResponse = Project;
+export type UpdateProjectApiStudioProjectsProjectIdPutResponse = void;
 
 export type DeleteProjectApiStudioProjectsProjectIdDeleteData = {
     projectId: number;
 };
 
-export type DeleteProjectApiStudioProjectsProjectIdDeleteResponse = number;
+export type DeleteProjectApiStudioProjectsProjectIdDeleteResponse = void;
 
 export type CreateChatChatCreateConfidantIdGetData = {
     confidantId: string;
@@ -232,7 +236,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: Node;
+                201: CreateUpdateDeleteSuccessful;
                 /**
                  * Validation Error
                  */
@@ -260,7 +264,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: Node;
+                204: void;
                 /**
                  * Validation Error
                  */
@@ -273,7 +277,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: number;
+                204: void;
                 /**
                  * Validation Error
                  */
@@ -326,7 +330,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: Edge;
+                200: CreateUpdateDeleteSuccessful;
                 /**
                  * Validation Error
                  */
@@ -354,7 +358,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: Edge;
+                204: void;
                 /**
                  * Validation Error
                  */
@@ -367,7 +371,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: number;
+                204: void;
                 /**
                  * Validation Error
                  */
@@ -390,7 +394,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: Project;
+                200: CreateUpdateDeleteSuccessful;
                 /**
                  * Validation Error
                  */
@@ -418,7 +422,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: Project;
+                204: void;
                 /**
                  * Validation Error
                  */
@@ -431,7 +435,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: number;
+                204: void;
                 /**
                  * Validation Error
                  */
