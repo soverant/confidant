@@ -35,7 +35,7 @@ COPY ./backend/ ./backend
 COPY ./main.py .
 COPY ./mitmproxy_reverse_proxy.py .
 
-RUN pipx install -r ./backend/requirements.txt
+RUN cat ./backend/requirements.txt | sed -e 's/#.*//' | xargs pipx inject <package>.
 # Copy the built Next.js application from the builder stage
 COPY --from=builder /app ./frontend
 
