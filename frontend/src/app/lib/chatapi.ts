@@ -1,5 +1,7 @@
 // postChat.ts
 
+import { BASE_URL } from "./constants"
+
 // Define the data interface
 export interface NewMessage {
     chat_id: string
@@ -23,8 +25,9 @@ export interface ChatData {
 
 // Function to post data
 export async function sendMessage(url: string, data: NewMessage): Promise<ChatData> {
+    const full_url = BASE_URL + url
     try {
-        const response = await fetch(url, {
+        const response = await fetch(full_url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -46,8 +49,9 @@ export async function sendMessage(url: string, data: NewMessage): Promise<ChatDa
 }
 
 export async function getChatData(url: string): Promise<ChatData> {
+    const full_url = BASE_URL + url
     try {
-        const response = await fetch(url, {
+        const response = await fetch(full_url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

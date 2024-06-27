@@ -56,7 +56,7 @@ try:
     log = logging.getLogger(__name__)
     app = FastAPI(title="Soverant POC API", lifespan=lifespan)
     app.include_router(studio.router, prefix="/api")
-    app.include_router(chat.router)
+    app.include_router(chat.router, prefix="/api")
     # Allow all origins (for development purposes)
     if conf.is_dev:
         origins = [
