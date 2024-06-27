@@ -25,7 +25,7 @@ FROM node:18
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get install -y python3.9 python3-pip mitmproxy && \
+    apt-get install -y python3 python3-pip mitmproxy && \
     rm -rf /var/lib/apt/lists/*
 
 RUN pip install mitmproxy
