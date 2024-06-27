@@ -104,8 +104,7 @@ class ProjectRepository:
     async def create_project(title: str, description: Optional[str] = None,
                              root_node_id: Optional[int] = None) -> int:
         if root_node_id is None:
-            root_node = await NodeRepository.create_node(title)
-        root_node_id = root_node["id"]
+            root_node_id = await NodeRepository.create_node(title)
 
         query = """
         INSERT INTO project (title, description, root_node_id) 

@@ -2,7 +2,7 @@ import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { Box, Container, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "@/app/ui/theme";
+import theme from "@/app/lib/theme";
 import Header from "@/app/ui/Header";
 import { ReactNode } from "react";
 

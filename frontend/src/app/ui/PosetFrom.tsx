@@ -15,7 +15,7 @@ import Box from "@mui/material/Box";
 import { ForwardRefEditor } from "./MDXEditor/ForwardRefEditor";
 import "@mdxeditor/editor/style.css";
 import { usePoset } from "../lib/hooks/poset";
-import { Services } from "../lib/client";
+import { Client } from "../lib/client";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -48,7 +48,7 @@ export const PosetFrom: FC<PosetFromProps> = (props) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Services.updateNodeApiStudioPosetNodesNodeIdPut({
+    Client.updateNodeApiStudioPosetNodesNodeIdPut({
       nodeId: id,
       requestBody: { spec, prompt, response },
     });

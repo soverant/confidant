@@ -1,19 +1,20 @@
 // components/PosetFrom.tsx
 import React, { useState } from "react";
-import { TextField, Button, Container, Typography } from "@mui/material";
-import { CreateProjectApiStudioProjectsPostData } from "@/app/lib/generated-client";
-import { Services } from "@/app/lib/client";
+import { TextField, Button, Typography } from "@mui/material";
+import { Client } from "@/app/lib/client";
+import { useProjects } from "@/app/lib/hooks/poset";
 
-export interface ProjectFromProps {
+interface ProjectFormProps {
   onSubmit?: () => void;
 }
 
-export const ProjectForm: React.FC<ProjectFromProps> = (props) => {
-  const { onSubmit = () => {} } = props;
+export const ProjectForm: React.FC<ProjectFormProps> = (props) => {
+  const { onSubmit } = props;
   const [formValues, setFormValues] = useState({
     title: "",
     description: "",
   });
+  const { mutate } = useProjects();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,14 +27,14 @@ export const ProjectForm: React.FC<ProjectFromProps> = (props) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted:", formValues);
-    const project = await Services.createProjectApiStudioProjectsPost({
+    const project = await Client.createProjectApiStudioProjectsPost({
       requestBody: {
         title: formValues.title,
         description: formValues.description,
       },
     });
-
-    onSubmit();
+    mutate();
+    onSubmit && onSubmit();
   };
 
   return (

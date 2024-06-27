@@ -1,9 +1,9 @@
 "use client";
-import { Services } from "@/app/lib/client";
+import { Client } from "@/app/lib/client";
 import { usePosetChildrens, usePosetParents } from "@/app/lib/hooks/poset";
 import { PosetFrom } from "@/app/ui/PosetFrom";
 import { PosetHorizontalList } from "@/app/ui/PosetHorizontalList";
-import { ProjectForm } from "@/app/ui/ProjectForm";
+import { ProjectForm } from "@/app/components/ProjectForm";
 import {
   Button,
   Container,
@@ -29,10 +29,10 @@ export default function Poset({ params }: { params: { id: string } }) {
   };
 
   const newChild = async () => {
-    const newNode = await Services.createNodeApiStudioPosetNodesPost({
+    const newNode = await Client.createNodeApiStudioPosetNodesPost({
       requestBody: { title: newPosetTitle },
     });
-    await Services.createEdgeApiStudioPosetEdgesPost({
+    await Client.createEdgeApiStudioPosetEdgesPost({
       requestBody: { from_node: Number(params.id), to_node: newNode.id },
     });
     childrens.mutate();

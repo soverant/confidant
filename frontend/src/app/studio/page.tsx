@@ -1,18 +1,13 @@
 "use client";
 import { useState } from "react";
-import ProjectList from "@/app/ui/ProjectList";
-import { ProjectForm } from "@/app/ui/ProjectForm";
+import ProjectList from "@/app/studio/ui/ProjectList";
+import { ProjectForm } from "@/app/studio/ui/ProjectForm";
 import Header from "@/app/ui/Header";
 import {
   Box,
   Button,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Modal,
-  TextField,
 } from "@mui/material";
 
 export default function StudioHome() {

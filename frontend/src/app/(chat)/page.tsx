@@ -1,12 +1,12 @@
 "use client";
 import { Box, Button, Container, IconButton } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
-import { Bubble, BubbleProps } from "./ui/Bubble";
-import { ChatInput } from "./ui/ChatInput";
+import { Bubble, BubbleProps } from "../ui/Bubble";
+import { ChatInput } from "../ui/ChatInput";
 import { useEffect, useRef, useState } from "react";
-import { ChatData, Message, getChatData, sendMessage } from "./lib/chatapi";
-import { CHAT_KEY } from "./lib/constants";
-import Header from "./ui/Header";
+import { ChatData, Message, getChatData, sendMessage } from "../lib/chatapi";
+import { CHAT_KEY } from "../lib/constants";
+import Header from "../ui/Header";
 
 export default function Home() {
   const [chatId, setChatId] = useState<string>();
