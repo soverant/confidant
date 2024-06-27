@@ -19,8 +19,12 @@ RUN npm run build
 # Stage 2: Final stage with Node.js, npm, and Python 3.9
 FROM node:18
 
+
+
 # Install Python 3.9 and other dependencies
 RUN apt-get update && \
+    apt-get install software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa
     apt-get install -y python3.9 python3-pip mitmproxy && \
     rm -rf /var/lib/apt/lists/*
 
