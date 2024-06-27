@@ -38,7 +38,7 @@ COPY ./backend/ ./backend
 COPY ./main.py .
 COPY ./mitmproxy_reverse_proxy.py .
 
-RUN python -m pip install -r requirements.txt
+RUN python -m pip install -r ./backend/requirements.txt
 # Copy the built Next.js application from the builder stage
 COPY --from=builder /app ./frontend
 
