@@ -1,26 +1,8 @@
 # Stage 1: Build Next.js application
 ARG API_BASE_URL=https://soverant.darkube.app
 
-FROM node:18 AS builder
-
-# Set the working directory
-WORKDIR /app
-
-# Copy package.json and package-lock.json
-COPY ./frontend/package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application source code
-COPY ./frontend/ .
-ENV NEXT_PUBLIC_API_BASE_URL #{API_BASE_URL}
-# Build the Next.js application
-RUN npm run build
-
 # Stage 2: Final stage with Node.js, npm, and Python 3.9
 FROM node:18
-
 
 
 # Install Python 3.9 and other dependencies
@@ -40,12 +22,21 @@ COPY ./backend/ ./backend
 COPY ./main.py .
 COPY ./mitmproxy_reverse_proxy.py .
 
-RUN python -m pip install -r ./backend/requirements.txt
-# Copy the built Next.js application from the builder stage
-COPY --from=builder /app ./frontend
+RUN python -m pip install -r ./backend/requirements.txt && \
+    mkdir ./backend/data
 
-# Install production dependencies
-RUN cd frontend && npm install --production
+VOLUME ./backend/data    
+
+# Install dependencies
+COPY ./frontend/package*.json ./
+RUN cd frontend && npm install
+
+# Copy the rest of the application source code
+COPY ./frontend/ .
+ENV NEXT_PUBLIC_API_BASE_URL #{API_BASE_URL}
+# Build the Next.js application
+RUN cd frontend && npm run build
+
 
 # Run a Python command (replace 'your_script.py' with your actual script)
 CMD ["python", "main.py", "production"]
