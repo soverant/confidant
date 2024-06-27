@@ -23,7 +23,7 @@ FROM node:18
 
 # Install Python 3.9 and other dependencies
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip mitmproxy && \
+    apt-get install -y python3 python3-pip python3-venv mitmproxy && \
     rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
