@@ -28,11 +28,11 @@ RUN python -m pip install -r ./backend/requirements.txt && \
 VOLUME ./backend/data    
 
 # Install dependencies
-COPY ./frontend/package*.json ./
-RUN cd frontend && npm install
+COPY ./frontend/package*.json ./frontend
+RUN cd ./frontend && npm install
 
 # Copy the rest of the application source code
-COPY ./frontend/ .
+COPY ./frontend/ ./frontend/
 ENV NEXT_PUBLIC_API_BASE_URL #{API_BASE_URL}
 # Build the Next.js application
 RUN cd frontend && npm run build
