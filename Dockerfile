@@ -35,12 +35,12 @@ COPY ./backend/ ./backend
 COPY ./main.py .
 COPY ./mitmproxy_reverse_proxy.py .
 
-RUN python -m pip install -r requirements.txt
+RUN python3 -m pip install -r requirements.txt
 # Copy the built Next.js application from the builder stage
 COPY --from=builder /app ./frontend
 
 # Install production dependencies
-RUN npm install --production
+RUN cd frontend && npm install --production
 
 # Run a Python command (replace 'your_script.py' with your actual script)
-CMD ["python3.9", "your_script.py"]
+CMD ["python3", "main.py", "production"]
