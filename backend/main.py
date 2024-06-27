@@ -13,9 +13,8 @@ from chats import chat
 from chats.chat import confidants_service
 from config import get_config
 from logger import setup_logger
-from poset import poset
-from poset.repository import get_database
-
+from studio import studio
+from studio.dbm import get_database
 
 conf = get_config()
 
@@ -31,11 +30,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             add_exception_handlers=True,
     ):
         # db connected
-        print("root db connected")
+        log.info("orm db connected")
         umdatabase = get_database()
         umdatabase.init_db(conf.unmanaged_db_url)
         await umdatabase.connect_to_database()
         await umdatabase.create_tables()
+        log.info("unmanaged db connected")
         client = AsyncAzureOpenAI(
             # This is the default and can be omitted
             api_key=conf.openai_token,
@@ -43,7 +43,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             azure_endpoint="https://mlk-openai-farhoud.openai.azure.com/",
         )
         confidant = NarratorConfidant(client)
-        confidants_service.set_confidant("0",confidant)
+        confidants_service.set_confidant("0", confidant)
         yield
         # app teardown
         await umdatabase.disconnect_from_database()
@@ -55,7 +55,7 @@ try:
     setup_logger(conf.get_log_level())
     log = logging.getLogger(__name__)
     app = FastAPI(title="Soverant POC API", lifespan=lifespan)
-    app.include_router(poset.router)
+    app.include_router(studio.router, prefix="/api")
     app.include_router(chat.router)
     # Allow all origins (for development purposes)
     if conf.is_dev:

@@ -1,23 +1,13 @@
 "use client";
-import {
-  Box,
-  FormControl,
-  IconButton,
-  TextField,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
-  Container,
-} from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import { Bubble, BubbleProps } from "./ui/Bubble";
-import { ChatInput } from "./ui/ChatInput";
+import { Box, Button, Container, IconButton } from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
+import { Bubble, BubbleProps } from "../ui/Bubble";
+import { ChatInput } from "../ui/ChatInput";
 import { useEffect, useRef, useState } from "react";
-import { ChatData, Message, getChatData, sendMessage } from "./lib/chatapi";
-// @ts-ignore
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+import { ChatData, Message, getChatData, sendMessage } from "../lib/chatapi";
+import { CHAT_KEY } from "../lib/constants";
+import Header from "../ui/Header";
 
-const CHAT_KEY = "chat";
 export default function Home() {
   const [chatId, setChatId] = useState<string>();
   const user = "guest";
@@ -43,7 +33,7 @@ export default function Home() {
   useEffect(() => {
     // @ts-ignore
     listRef.current?.lastElementChild?.scrollIntoView();
-  }, [chat?.messages]);
+  }, [chat?.messages, text]);
 
   const mapSenderType = (
     sender: Message["sender_type"]
@@ -60,27 +50,30 @@ export default function Home() {
 
   return (
     <>
-      <Container
-        ref={listRef}
-        sx={{ maxHeight: "79%" }}
-        className="overflow-y-auto"
-        maxWidth="lg"
+      <Header
+        title="Soverant"
+        right={() => (
+          <Box>
+            <Button variant="text">Skip</Button>
+          </Box>
+        )}
+      ></Header>
+      <Box
+        sx={{ scrollbarWidth: "thin" }}
+        className="h-[calc(100vh-225px)] overflow-y-auto"
       >
-        {!!chat &&
-          chat.messages.map((i) => (
-            <Bubble
-              key={i.id}
-              content={i.content}
-              type={mapSenderType(i.sender_type)}
-            ></Bubble>
-          ))}
-      </Container>
-      <Container
-        sx={{ maxWidth: "lg" }}
-        maxWidth="lg"
-        className="fixed bottom-0 left-0 right-0"
-        disableGutters
-      >
+        <Container  ref={listRef} maxWidth="lg">
+          {!!chat &&
+            chat.messages.map((i) => (
+              <Bubble
+                key={i.id}
+                content={i.content}
+                type={mapSenderType(i.sender_type)}
+              ></Bubble>
+            ))}
+        </Container>
+      </Box>
+      <Container maxWidth="lg">
         <ChatInput
           text={text}
           onTextChange={setText}
