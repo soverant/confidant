@@ -23,19 +23,22 @@ FROM node:18
 
 # Install Python 3.9 and other dependencies
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip pipx mitmproxy && \
+    apt-get install -y python3 python3-pip mitmproxy && \
     rm -rf /var/lib/apt/lists/*
-
-RUN pipx install mitmproxy
 
 # Set the working directory
 WORKDIR /app
+
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
  
+RUN pip install mitmproxy
+
 COPY ./backend/ ./backend
 COPY ./main.py .
 COPY ./mitmproxy_reverse_proxy.py .
 
-RUN python3 -m pip install -r requirements.txt
+RUN python -m pip install -r requirements.txt
 # Copy the built Next.js application from the builder stage
 COPY --from=builder /app ./frontend
 
@@ -43,4 +46,4 @@ COPY --from=builder /app ./frontend
 RUN cd frontend && npm install --production
 
 # Run a Python command (replace 'your_script.py' with your actual script)
-CMD ["python3", "main.py", "production"]
+CMD ["python", "main.py", "production"]
