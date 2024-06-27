@@ -1,4 +1,6 @@
 # Stage 1: Build Next.js application
+ARG API_BASE_URL=https://soverant.darkube.app
+
 FROM node:18 AS builder
 
 # Set the working directory
@@ -12,7 +14,7 @@ RUN npm install
 
 # Copy the rest of the application source code
 COPY ./frontend/ .
-ENV NEXT_PUBLIC_API_BASE_URL http://localhost:8001
+ENV NEXT_PUBLIC_API_BASE_URL #{API_BASE_URL}
 # Build the Next.js application
 RUN npm run build
 
