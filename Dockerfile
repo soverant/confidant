@@ -33,7 +33,7 @@ RUN cd ./frontend && npm install
 
 # Copy the rest of the application source code
 
-ENV NEXT_PUBLIC_API_BASE_URL ${API_BASE_URL}
+ENV NEXT_PUBLIC_API_BASE_URL=$API_BASE_URL
 # Build the Next.js application
 RUN cd frontend && npm run build
 
