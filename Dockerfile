@@ -60,6 +60,8 @@ COPY --from=build-frontend /app /app/frontend
 
 # Backend
 COPY --from=build-backend /app /app/backend
+
+RUN ls -lah /app/*
  
 
 COPY ./main.py .
