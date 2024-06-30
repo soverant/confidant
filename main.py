@@ -59,13 +59,13 @@ def start_servers(env):
     frontend_process = subprocess.Popen(frontend_command, cwd=frontend_dir, shell=True, stdout=subprocess.PIPE,
                                         stderr=subprocess.PIPE)
 
-    if env=="production":
-        proxy_logger.info("Starting mitmproxy server with command: %s", proxy_command)                                        
-        proxy_process = subprocess.Popen(proxy_command, cwd=proxy_dir, shell=True, stdout=subprocess.PIPE,
-                                        stderr=subprocess.PIPE)
-        # Stream logs for proxy
-        Thread(target=stream_logs, args=(proxy_process.stdout, proxy_logger)).start()
-        Thread(target=stream_logs, args=(proxy_process.stderr, proxy_logger)).start()                                        
+    # if env=="production":
+    #     proxy_logger.info("Starting mitmproxy server with command: %s", proxy_command)                                        
+    #     proxy_process = subprocess.Popen(proxy_command, cwd=proxy_dir, shell=True, stdout=subprocess.PIPE,
+    #                                     stderr=subprocess.PIPE)
+    #     # Stream logs for proxy
+    #     Thread(target=stream_logs, args=(proxy_process.stdout, proxy_logger)).start()
+    #     Thread(target=stream_logs, args=(proxy_process.stderr, proxy_logger)).start()                                        
 
     def shutdown(signum, frame):
         cli_logger.info("Shutting down servers...")

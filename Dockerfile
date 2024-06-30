@@ -7,7 +7,7 @@ ENV PATH="/app/venv/bin:$PATH"
 
 COPY ./backend/requirements.txt ./
 
-RUN pip install -r requirements.txt && pip install mitmproxy
+RUN pip install -r requirements.txt
 
 COPY ./backend ./
 
@@ -68,7 +68,6 @@ ENV PATH="/opt/venv/bin:$PATH"
  
 
 COPY ./main.py .
-COPY ./mitmproxy_reverse_proxy.py .
 
 VOLUME ./backend/data    
 
