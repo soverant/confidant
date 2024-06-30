@@ -67,7 +67,7 @@ ENV PATH="/venv/bin:$PATH"
 # Set the working directory
 WORKDIR /app
 
-COPY --from=builder /venv /venv
+COPY --from=build-backend /venv /venv
 
 # Front end
 COPY --from=build-frontend /app /app/frontend
