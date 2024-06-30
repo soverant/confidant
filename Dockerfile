@@ -79,7 +79,7 @@ COPY ./backend /app/backend
 
 COPY ./main.py .
 
-COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 VOLUME ./backend/data    
 
