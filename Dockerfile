@@ -1,42 +1,80 @@
-# Stage 1: Build Next.js application
+FROM python:3.9-alpine as build-backend
+
+WORKDIR /app
+
+RUN python3 -m venv ./venv
+ENV PATH="/app/venv/bin:$PATH"
+
+ADD ./backend/requirements.txt ./
+
+RUN pip install -r requirements.txt && pip install mitmproxy
+
+add ./backend/* ./
+
 ARG API_BASE_URL=https://soverant.darkube.app
+# Install dependencies only when needed
+FROM node:18-alpine AS build-frontend
+ENV NEXT_PUBLIC_API_BASE_URL=$API_BASE_URL
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
 
-# Stage 2: Final stage with Node.js, npm, and Python 3.9
-FROM node:18
+# Install dependencies based on the preferred package manager
+COPY ./frontend/package.json ./frontend/yarn.lock* ./frontend/package-lock.json* ./frontend/pnpm-lock.yaml* ./
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY ./frontend/* ./
+
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the build.
+ ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN \
+  if [ -f yarn.lock ]; then yarn run build; \
+  elif [ -f package-lock.json ]; then npm run build; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
 
-# Install Python 3.9 and other dependencies
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip python3-venv mitmproxy && \
-    rm -rf /var/lib/apt/lists/*
+
+
+FROM node:18-alpine AS runner
+
+FROM base AS runner
+
+ENV NODE_ENV production
+# Uncomment the following line in case you want to disable telemetry during runtime.
+ENV NEXT_TELEMETRY_DISABLED 1
 
 # Set the working directory
 WORKDIR /app
 
+
+# Front end
+COPY --from=build-frontend /app/public ./frontend/public
+COPY --from=build-frontend /app/.next/standalone ./
+COPY --from=build-frontend /app/.next/static ./.next/static
+
+# Backend
+COPY --from=build-backend /app ./backend
+
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
  
-RUN pip install mitmproxy
 
-COPY ./backend/ ./backend
 COPY ./main.py .
 COPY ./mitmproxy_reverse_proxy.py .
 
-RUN python -m pip install -r ./backend/requirements.txt && \
-    mkdir ./backend/data
-
 VOLUME ./backend/data    
-
-# Install dependencies
-COPY ./frontend/ ./frontend/
-RUN cd ./frontend && npm install
-
-# Copy the rest of the application source code
-
-ENV NEXT_PUBLIC_API_BASE_URL=$API_BASE_URL
-# Build the Next.js application
-RUN cd frontend && npm run build
 
 
 # Run a Python command (replace 'your_script.py' with your actual script)
-CMD ["python", "main.py", "production"]
+CMD ["./venv/bin/python", "main.py", "production"]
