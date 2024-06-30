@@ -54,6 +54,8 @@ RUN \
 
 FROM node:18-alpine AS runner
 
+RUN apk add --no-cache python3
+
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
@@ -85,6 +87,5 @@ ENTRYPOINT []
 
 RUN ls -lah /venv/bin/
 
-RUN apk add --no-cache python3
 # Run a Python command (replace 'your_script.py' with your actual script)
 CMD ["python", "main.py", "production"]
