@@ -2,14 +2,21 @@ FROM python:3.9-alpine as build-backend
 
 WORKDIR /app
 
-RUN python3 -m venv ./venv
-ENV PATH="/app/venv/bin:$PATH"
+# Sets utf-8 encoding for Python et al
+ENV LANG=C.UTF-8
+# Turns off writing .pyc files; superfluous on an ephemeral container.
+ENV PYTHONDONTWRITEBYTECODE=1
+# Seems to speed things up
+ENV PYTHONUNBUFFERED=1
+
+# Ensures that the python and pip executables used
+# in the image will be those from our virtualenv.
+ENV PATH="/venv/bin:$PATH"
 
 COPY ./backend/requirements.txt ./
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./backend ./
 
 ARG API_BASE_URL=https://soverant.darkube.app
 # Install dependencies only when needed
@@ -51,15 +58,22 @@ ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# Extra python env
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV PATH="/venv/bin:$PATH"
+
 # Set the working directory
 WORKDIR /app
 
+COPY --from=builder /venv /venv
 
 # Front end
 COPY --from=build-frontend /app /app/frontend
 
 # Backend
-COPY --from=build-backend /app /app/backend
+COPY ./backend /app/backend
 
 
 
@@ -69,6 +83,6 @@ VOLUME ./backend/data
 
 ENTRYPOINT []
 
-RUN ls -lah /app/backend/venv/bin/
+RUN ls -lah /venv/bin/
 # Run a Python command (replace 'your_script.py' with your actual script)
-CMD ["/app/backend/venv/bin/python", "main.py", "production"]
+CMD ["python", "main.py", "production"]
