@@ -9,8 +9,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Seems to speed things up
 ENV PYTHONUNBUFFERED=1
 
-# Ensures that the python and pip executables used
-# in the image will be those from our virtualenv.
+RUN python -m venv /venv
+
 ENV PATH="/venv/bin:$PATH"
 
 COPY ./backend/requirements.txt ./
