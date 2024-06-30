@@ -79,7 +79,7 @@ COPY ./backend /app/backend
 
 COPY ./main.py .
 
-COPY ./reverse_proxy.conf /etc/nginx/conf.d/soverant.conf
+COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
 
 VOLUME ./backend/data    
 
