@@ -56,15 +56,10 @@ WORKDIR /app
 
 
 # Front end
-COPY --from=build-frontend /app/public ./frontend/public
-COPY --from=build-frontend /app/.next/standalone ./
-COPY --from=build-frontend /app/.next/static ./.next/static
+COPY --from=build-frontend /app ./frontend
 
 # Backend
 COPY --from=build-backend /app ./backend
-
-RUN python3 -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
  
 
 COPY ./main.py .

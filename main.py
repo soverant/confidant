@@ -44,7 +44,7 @@ def start_servers(env):
     # Start FastAPI server
     backend_command = f"uvicorn main:app --reload" if env == "development" else f"uvicorn main:app --host 0.0.0.0 --port 8000"
     # Start Next.js server
-    frontend_command = f"npm run dev" if env == "development" else f'HOSTNAME="0.0.0.0" node server.js'
+    frontend_command = f"npm run dev" if env == "development" else f'npm run start'
     # Reverse Proxy server
     proxy_command = f"mitmdump -s mitmproxy_reverse_proxy.py -p 8001"
 
