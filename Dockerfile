@@ -56,10 +56,10 @@ WORKDIR /app
 
 
 # Front end
-COPY --from=build-frontend /app ./frontend/
+COPY --from=build-frontend /app /app/frontend
 
 # Backend
-COPY --from=build-backend /app ./backend/
+COPY --from=build-backend /app /app/backend
  
 
 COPY ./main.py .
