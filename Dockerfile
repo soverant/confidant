@@ -66,6 +66,6 @@ COPY ./main.py .
 
 VOLUME ./backend/data    
 
-
+ENTRYPOINT []
 # Run a Python command (replace 'your_script.py' with your actual script)
 CMD ["./backend/venv/bin/python", "main.py", "production"]
