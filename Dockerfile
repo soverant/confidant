@@ -84,5 +84,7 @@ VOLUME ./backend/data
 ENTRYPOINT []
 
 RUN ls -lah /venv/bin/
+
+RUN apk add --no-cache python3
 # Run a Python command (replace 'your_script.py' with your actual script)
 CMD ["python", "main.py", "production"]
