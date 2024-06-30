@@ -68,4 +68,4 @@ VOLUME ./backend/data
 
 
 # Run a Python command (replace 'your_script.py' with your actual script)
-CMD ["./venv/bin/python", "main.py", "production"]
+CMD ["./backend/venv/bin/python", "main.py", "production"]
