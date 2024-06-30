@@ -61,13 +61,14 @@ COPY --from=build-frontend /app /app/frontend
 # Backend
 COPY --from=build-backend /app /app/backend
 
-RUN ls -lah /app/backend/venv/bin/
- 
+
 
 COPY ./main.py .
 
 VOLUME ./backend/data    
 
 ENTRYPOINT []
+
+RUN ls -lah /app/backend/venv/bin/
 # Run a Python command (replace 'your_script.py' with your actual script)
 CMD ["/app/backend/venv/bin/python", "main.py", "production"]
