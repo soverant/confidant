@@ -52,9 +52,9 @@ RUN \
 
 
 
-FROM node:18-alpine AS runner
+FROM python:3.9-alpine AS runner
 
-RUN apk add --no-cache python3
+RUN apk add --no-cache nodejs npm nginx
 
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
@@ -85,7 +85,6 @@ VOLUME ./backend/data
 
 ENTRYPOINT []
 
-RUN ls -lah /venv/bin/
 
 # Run a Python command (replace 'your_script.py' with your actual script)
 CMD ["python", "main.py", "production"]
