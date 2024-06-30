@@ -77,9 +77,9 @@ COPY --from=build-frontend /app /app/frontend
 # Backend
 COPY ./backend /app/backend
 
-
-
 COPY ./main.py .
+
+COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
 
 VOLUME ./backend/data    
 
