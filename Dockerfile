@@ -5,11 +5,11 @@ WORKDIR /app
 RUN python3 -m venv ./venv
 ENV PATH="/app/venv/bin:$PATH"
 
-ADD ./backend/requirements.txt ./
+COPY ./backend/requirements.txt ./
 
 RUN pip install -r requirements.txt && pip install mitmproxy
 
-add ./backend/* ./
+COPY ./backend ./
 
 ARG API_BASE_URL=https://soverant.darkube.app
 # Install dependencies only when needed
@@ -28,7 +28,7 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-COPY ./frontend/* ./
+COPY ./frontend ./
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
