@@ -1,3 +1,5 @@
+ARG API_BASE_URL=https://soverant.darkube.app
+
 FROM python:3.9-alpine as build-backend
 
 WORKDIR /app
@@ -17,7 +19,7 @@ COPY ./backend/requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-ARG API_BASE_URL=https://soverant.darkube.app
+
 # Install dependencies only when needed
 FROM node:18-alpine AS build-frontend
 
@@ -42,7 +44,7 @@ COPY ./frontend ./
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN echo NEXT_PUBLIC_API_BASE_URL=https://soverant.darkube.app > .env.local && \
+RUN echo NEXT_PUBLIC_API_BASE_URL=$API_BASE_URL > .env.local && \
     cat .env.local
 
 RUN \
