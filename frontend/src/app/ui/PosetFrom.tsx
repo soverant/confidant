@@ -1,4 +1,3 @@
-// components/PosetFrom.tsx
 "use client";
 import { FC, useState, ForwardedRef } from "react";
 import { TextField, Button, Container, Typography } from "@mui/material";
@@ -46,8 +45,7 @@ export const PosetFrom: FC<PosetFromProps> = (props) => {
     setSelectedTab(newValue);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     Client.updateNodeApiStudioPosetNodesNodeIdPut({
       nodeId: id,
       requestBody: { spec, prompt, response },

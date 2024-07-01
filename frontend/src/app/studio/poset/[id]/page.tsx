@@ -3,7 +3,6 @@ import { Client } from "@/app/lib/client";
 import { usePosetChildrens, usePosetParents } from "@/app/lib/hooks/poset";
 import { PosetFrom } from "@/app/ui/PosetFrom";
 import { PosetHorizontalList } from "@/app/ui/PosetHorizontalList";
-import { ProjectForm } from "@/app/components/ProjectForm";
 import {
   Button,
   Container,

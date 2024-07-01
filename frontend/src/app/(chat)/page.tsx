@@ -21,8 +21,8 @@ export default function Home() {
 
     getChatData(
       _chatId
-        ? `http://localhost:8000/chat/${_chatId}`
-        : "http://localhost:8000/chat/create/0"
+        ? `/api/chat/${_chatId}`
+        : "/api/chat/create/0"
     ).then((data) => {
       setChat(data);
       setChatId(data.id);
@@ -79,7 +79,7 @@ export default function Home() {
           onTextChange={setText}
           onSend={() => {
             if (chatId && text) {
-              sendMessage("http://localhost:8000/chat/", {
+              sendMessage("/api/chat", {
                 chat_id: chatId,
                 content: text,
                 sender_type: "user",

@@ -1,4 +1,3 @@
-// components/ProjectList.tsx
 import { FC } from "react";
 import {
   Container,
