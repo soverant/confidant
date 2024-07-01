@@ -16,8 +16,8 @@ Soverant application
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/git@github.com:soverant/confidant.git
-cd confidant
+git clone git@github.com:soverant/poc.git
+cd poc
 ```
 
 ### Set Up Python Environment
@@ -75,11 +75,42 @@ python main.py development
 python main.py production
 ```
 
+### Generation Mode
+
+- update backend openapi spec at ./backend/openapi.json
+- generate frontend client at ./frontend/src/app/lib/generated-client
+
+```bash
+python main.py generation
+```
+
+### Configs:
+
+project use .env and environment variable to read config:
+
+#### Backend
+
+```
+OPENAI_TOKEN="YOUR OPENAI TOKEN"
+LOG_LEVEL=""
+HOST=""
+PORT=""
+ENVIRONMENT=""
+ORM_DB_URL=""
+UNMANAGED_DB_URL=""
+OPENAI_TOKEN=""
+```
+#### Frontend
+
+```
+NEXT_PUBLIC_API_BASE_URL="API Server URL"
+```
+
 ## Logging
 
 The application streams logs from both the FastAPI back-end and the Next.js front-end to the console using the Python logging module.
 
-## Project Structure
+<!-- ## Project Structure
 
 ```
 your-project-name/
@@ -92,9 +123,8 @@ your-project-name/
 │   ├── package.json
 │   └── ...
 ├── main.py
-├── venv/
 └── ...
-```
+``` -->
 
 ## Contributing
 
