@@ -40,8 +40,8 @@ def start_servers(env):
     frontend_dir = os.path.join(os.getcwd(), 'frontend')
     proxy_dir = os.path.join(os.getcwd(), './')
 
-    if os.getenv('NEXT_PUBLIC_API_BASE_URL') is None:
-        os.environ['NEXT_PUBLIC_API_BASE_URL']="http://localhost:8001" if env=="production" else "http://localhost:8000"
+    # if os.getenv('NEXT_PUBLIC_API_BASE_URL') is None :
+    #     os.environ['NEXT_PUBLIC_API_BASE_URL']="http://localhost:8001" if env=="production" else "http://localhost:8000"
 
     # Start FastAPI server
     backend_command = f"uvicorn main:app --reload" if env == "development" else f"python -m uvicorn main:app --host 0.0.0.0 --port 8000"
